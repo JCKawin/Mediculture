@@ -1,0 +1,28 @@
+<mxfile host="65bd71144e">
+    <diagram id="PtXLaBM00-lh8xyZmS4A" name="Page-1">
+        <mxGraphModel dx="1178" dy="899" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="8" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="110" y="700" width="575" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="2" value="User Frontend&lt;div&gt;Flutter&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="405" y="715" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="Doctor Frontend&lt;div&gt;React&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="125" y="715" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="Delivery frontend&lt;div&gt;React&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="265" y="715" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="Shopkeeper frontend&lt;div&gt;React&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="545" y="715" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="Authentication FireBase" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="110" y="620" width="580" height="60" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
