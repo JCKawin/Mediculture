@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CustomAppBar extends StatelessWidget {
   static const Color primaryPurple = Color(0xFF9C88FF);
@@ -10,7 +11,7 @@ class CustomAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      expandedHeight: 120.0,
+      expandedHeight: 140.0,
       floating: false,
       pinned: true,
       elevation: 0,
@@ -80,7 +81,7 @@ class CustomAppBar extends StatelessWidget {
                       children: [
                         Text(
                           'MEDICULTURE',
-                          style: TextStyle(
+                          style: GoogleFonts.poppins(
                             fontSize: 28,
                             fontWeight: FontWeight.w800,
                             color: Colors.white,
@@ -97,7 +98,7 @@ class CustomAppBar extends StatelessWidget {
                         SizedBox(height: 4),
                         Text(
                           'Your Health, Our Priority',
-                          style: TextStyle(
+                          style: GoogleFonts.poppins(
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
                             color: Colors.white.withValues(alpha:0.9),

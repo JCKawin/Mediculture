@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ReminderCard extends StatelessWidget {
   static const Color primaryPurple = Color(0xFF9C88FF);
@@ -79,7 +80,7 @@ class ReminderCard extends StatelessWidget {
               children: [
                 Text(
                   reminderData['title'],
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                     color: darkPurple,
@@ -88,7 +89,7 @@ class ReminderCard extends StatelessWidget {
                 SizedBox(height: 4),
                 Text(
                   reminderData['time'],
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
                     color: Colors.grey[600],
@@ -110,7 +111,7 @@ class ReminderCard extends StatelessWidget {
             ),
             child: Text(
               'Pending',
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 fontSize: 11,
                 fontWeight: FontWeight.w600,
                 color: reminderData['color'],

@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class NeomorphicButton extends StatefulWidget {
   final String title;
@@ -18,7 +19,7 @@ class NeomorphicButton extends StatefulWidget {
 }
 
 class _NeomorphicButtonState extends State<NeomorphicButton> {
-  static const Color primaryPurple = Color(0xFF9C88FF);
+  static const Color primaryPurple = Color.fromARGB(255, 103, 74, 249);
   static const Color lightPurple = Color(0xFFE8E2FF);
   static const Color darkPurple = Color(0xFF6C5CE7);
   static const Color ivory = Color(0xFFFFFDF7);
@@ -112,7 +113,7 @@ class _NeomorphicButtonState extends State<NeomorphicButton> {
             Text(
               widget.title,
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 fontSize: 15,
                 fontWeight: FontWeight.w600,
                 color: darkPurple,

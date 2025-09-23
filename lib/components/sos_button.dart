@@ -1,6 +1,7 @@
 
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 
 class SOSButton extends StatefulWidget {
@@ -75,7 +76,7 @@ class _SOSButtonState extends State<SOSButton> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                padding: EdgeInsets.all(16),
+                padding: EdgeInsets.all(15),
                 decoration: BoxDecoration(
                   color: Colors.white.withValues(alpha: .2),
                   borderRadius: BorderRadius.circular(16),
@@ -91,34 +92,27 @@ class _SOSButtonState extends State<SOSButton> {
                 ),
               ),
               SizedBox(height: 12),
-              Text(
-                'SOS',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w800,
-                  color: Colors.white,
-                  letterSpacing: 2.0,
-                  shadows: [
-                    Shadow(
-                      offset: Offset(0, 2),
-                      blurRadius: 4,
-                      color: Colors.black.withValues(alpha: .3),
-                    ),
-                  ],
+              SingleChildScrollView(
+                child: Text(
+                  'SOS',
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.poppins(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.white,
+                    letterSpacing: 2.0,
+                    shadows: [
+                      Shadow(
+                        offset: Offset(0, 2),
+                        blurRadius: 4,
+                        color: Colors.black.withValues(alpha: .3),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              SizedBox(height: 4),
-              Text(
-                'Emergency',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white.withValues(alpha: .9),
-                  letterSpacing: 0.8,
-                ),
-              ),
+              // SizedBox(height: 4),
+              
             ],
           ),
         ),

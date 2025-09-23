@@ -6,6 +6,8 @@ import 'package:mediculture_app/components/reminder_card.dart';
 import 'package:mediculture_app/components/neomorphic_button.dart';
 import 'package:mediculture_app/components/sos_button.dart';
 import 'package:mediculture_app/components/floating_bottom_bar.dart';
+import 'package:mediculture_app/screens/community_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatelessWidget {
   // Modern color theme: Light purple and Ivory
@@ -49,18 +51,18 @@ class HomePage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 20),
+                      SizedBox(height: 10),
 
                       // Floating Search Bar
                       FloatingSearchBar(),
 
-                      SizedBox(height: 30),
+                      SizedBox(height: 20),
 
                       // Daily Reminder Section
                       Text(
                         'Daily Reminder',
-                        style: TextStyle(
-                          fontSize: 24,
+                        style: GoogleFonts.poppins(
+                          fontSize: 25,
                           fontWeight: FontWeight.w700,
                           color: darkPurple,
                           letterSpacing: 0.5,
@@ -70,7 +72,7 @@ class HomePage extends StatelessWidget {
 
                       // Scrollable reminder cards
                       Container(
-                        height: 240,
+                        height: 200,
                         child: ListView.builder(
                           scrollDirection: Axis.vertical,
                           itemCount: 5,
@@ -81,19 +83,19 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
 
-                      SizedBox(height: 40),
+                      SizedBox(height: 27),
 
                       // Quick Actions Title
                       Text(
                         'Quick Actions',
-                        style: TextStyle(
-                          fontSize: 24,
+                        style: GoogleFonts.poppins(
+                          fontSize: 25,
                           fontWeight: FontWeight.w700,
                           color: darkPurple,
                           letterSpacing: 0.5,
                         ),
                       ),
-                      SizedBox(height: 20),
+                      // SizedBox(height: 10),
 
                       // Neomorphic Buttons Grid
                       GridView.count(
@@ -109,24 +111,26 @@ class HomePage extends StatelessWidget {
                             icon: Icons.people_alt_rounded,
                             onTap: () => _handleButtonTap(context, 'Community'),
                           ),
+                          SOSButton(
+                            onTap: () => _handleSOSTap(context),
+                          ),
                           NeomorphicButton(
                             title: 'Buy Medicine',
                             icon: Icons.medical_services_rounded,
                             onTap: () => _handleButtonTap(context, 'Buy Medicine'),
                           ),
                           NeomorphicButton(
-                            title: 'Book Appointment',
+                            title: """Appointment""",
                             icon: Icons.calendar_today_rounded,
                             onTap: () => _handleButtonTap(context, 'Book Appointment'),
                           ),
-                          SOSButton(
-                            onTap: () => _handleSOSTap(context),
-                          ),
+                          
                         ],
                       ),
 
-                      SizedBox(height: 140), // Space for floating bottom bar
+                      SizedBox(height: 110), // Extra space for bottom bar
                     ],
+                    
                   ),
                 ),
               ),
@@ -146,16 +150,7 @@ class HomePage extends StatelessWidget {
   }
 
   void _handleButtonTap(BuildContext context, String title) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('$title pressed'),
-        backgroundColor: primaryPurple,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-      ),
-    );
+  Navigator.push(context , MaterialPageRoute(builder: (context) => CommunityPage()));
   }
 
   void _handleSOSTap(BuildContext context) {

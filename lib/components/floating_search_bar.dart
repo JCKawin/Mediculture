@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class FloatingSearchBar extends StatelessWidget {
   static const Color primaryPurple = Color(0xFF9C88FF);
@@ -53,7 +54,7 @@ class FloatingSearchBar extends StatelessWidget {
             child: TextField(
               decoration: InputDecoration(
                 hintText: 'Search medicines, doctors, articles...',
-                hintStyle: TextStyle(
+                hintStyle: GoogleFonts.poppins(
                   color: Colors.grey[500],
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
@@ -61,7 +62,7 @@ class FloatingSearchBar extends StatelessWidget {
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.zero,
               ),
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 color: darkPurple,
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
