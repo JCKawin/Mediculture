@@ -81,7 +81,7 @@ class CustomAppBar extends StatelessWidget {
                       children: [
                         Text(
                           'MEDICULTURE',
-                          style: GoogleFonts.poppins(
+                          style: GoogleFonts.dmSans(
                             fontSize: 28,
                             fontWeight: FontWeight.w800,
                             color: Colors.white,
@@ -98,7 +98,7 @@ class CustomAppBar extends StatelessWidget {
                         SizedBox(height: 4),
                         Text(
                           'Your Health, Our Priority',
-                          style: GoogleFonts.poppins(
+                          style: GoogleFonts.dmSans(
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
                             color: Colors.white.withValues(alpha:0.9),

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:mediculture_app/components/custom_app_bar.dart';
 import 'package:mediculture_app/components/floating_search_bar.dart';
@@ -7,6 +6,9 @@ import 'package:mediculture_app/components/neomorphic_button.dart';
 import 'package:mediculture_app/components/sos_button.dart';
 import 'package:mediculture_app/components/floating_bottom_bar.dart';
 import 'package:mediculture_app/screens/community_screen.dart';
+import 'package:mediculture_app/screens/medicine_screen.dart'; // Add your screen imports
+import 'package:mediculture_app/screens/appointment_screen.dart';
+import 'package:mediculture_app/screens/tracking_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatelessWidget {
@@ -83,7 +85,12 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
 
-                      SizedBox(height: 27),
+                      SizedBox(height: 25),
+
+                      // SEPARATOR LINE BETWEEN SECTIONS
+                      _buildSectionSeparator(),
+
+                      SizedBox(height: 25),
 
                       // Quick Actions Title
                       Text(
@@ -95,7 +102,7 @@ class HomePage extends StatelessWidget {
                           letterSpacing: 0.5,
                         ),
                       ),
-                      // SizedBox(height: 10),
+                      SizedBox(height: 16),
 
                       // Neomorphic Buttons Grid
                       GridView.count(
@@ -110,27 +117,29 @@ class HomePage extends StatelessWidget {
                             title: 'Community',
                             icon: Icons.people_alt_rounded,
                             onTap: () => _handleButtonTap(context, 'Community'),
+                            screenWidget: CommunityPage(), // Pass the screen
                           ),
                           SOSButton(
                             onTap: () => _handleSOSTap(context),
+                            screenWidget: TrackingScreen(), // Pass the SOS screen
                           ),
                           NeomorphicButton(
                             title: 'Buy Medicine',
                             icon: Icons.medical_services_rounded,
                             onTap: () => _handleButtonTap(context, 'Buy Medicine'),
+                            screenWidget: MedicineScreen(), // Pass the medicine screen
                           ),
                           NeomorphicButton(
-                            title: """Appointment""",
+                            title: "Appointment",
                             icon: Icons.calendar_today_rounded,
                             onTap: () => _handleButtonTap(context, 'Book Appointment'),
+                            screenWidget: AppointmentScreen(), // Pass the appointment screen
                           ),
-                          
                         ],
                       ),
 
                       SizedBox(height: 110), // Extra space for bottom bar
                     ],
-                    
                   ),
                 ),
               ),
@@ -149,26 +158,61 @@ class HomePage extends StatelessWidget {
     );
   }
 
+  // BUILD SECTION SEPARATOR
+  Widget _buildSectionSeparator() {
+    return Container(
+      width: double.infinity,
+      child: Row(
+        children: [
+          Expanded(
+            child: Container(
+              height: 1.5,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.transparent,
+                    lightPurple.withOpacity(0.4),
+                    primaryPurple.withOpacity(0.6),
+                    lightPurple.withOpacity(0.4),
+                    Colors.transparent,
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // UPDATED HANDLE BUTTON TAP - Navigate to different screens
   void _handleButtonTap(BuildContext context, String title) {
-  Navigator.push(context , MaterialPageRoute(builder: (context) => CommunityPage()));
+    Widget targetScreen;
+    
+    switch (title) {
+      case 'Community':
+        targetScreen = CommunityPage();
+        break;
+      case 'Buy Medicine':
+        targetScreen = MedicineScreen();
+        break;
+      case 'Book Appointment':
+        targetScreen = AppointmentScreen();
+        break;
+      default:
+        targetScreen = CommunityPage(); // Default fallback
+    }
+    
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => targetScreen),
+    );
   }
 
   void _handleSOSTap(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Row(
-          children: [
-            Icon(Icons.warning_rounded, color: Colors.white),
-            SizedBox(width: 8),
-            Text('Emergency SOS Activated!'),
-          ],
-        ),
-        backgroundColor: Colors.deepOrange,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-      ),
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => TrackingScreen()),
     );
   }
 }

@@ -201,7 +201,7 @@ class CommunityPage extends StatelessWidget {
                       children: [
                         Text(
                           'COMMUNITY',
-                          style: GoogleFonts.poppins(
+                          style: GoogleFonts.dmSans(
                             fontSize: 28,
                             fontWeight: FontWeight.w800,
                             color: Colors.white,
@@ -591,14 +591,14 @@ Widget _buildFeaturedGroups() {
             borderRadius: BorderRadius.circular(18),
             boxShadow: [
               BoxShadow(
-                color: (group['color'] as Color).withOpacity(0.1),
+                color: (group['color'] as Color).withValues(alpha: .1),
                 spreadRadius: 0,
                 blurRadius: 15,
                 offset: Offset(0, 5),
               ),
             ],
             border: Border.all(
-              color: (group['color'] as Color).withOpacity(0.2),
+              color: (group['color'] as Color).withValues(alpha: .2),
               width: 1,
             ),
           ),
@@ -611,7 +611,7 @@ Widget _buildFeaturedGroups() {
                   Container(
                     padding: EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: (group['color'] as Color).withOpacity(0.1),
+                      color: (group['color'] as Color).withValues(alpha: .1),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Icon(
@@ -624,11 +624,11 @@ Widget _buildFeaturedGroups() {
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
-                        colors: [(group['color'] as Color).withOpacity(0.15), (group['color'] as Color).withOpacity(0.08)],
+                        colors: [(group['color'] as Color).withValues(alpha: .15), (group['color'] as Color).withValues(alpha: .08)],
                       ),
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
-                        color: (group['color'] as Color).withOpacity(0.3),
+                        color: (group['color'] as Color).withValues(alpha: .3),
                         width: 1,
                       ),
                     ),
@@ -811,14 +811,14 @@ class _DiscussionPostState extends State<DiscussionPost> with SingleTickerProvid
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.08),
+            color: Colors.grey.withValues(alpha: .08),
             spreadRadius: 0,
             blurRadius: 15,
             offset: Offset(0, 5),
           ),
         ],
         border: Border.all(
-          color: Colors.grey.withOpacity(0.1),
+          color: Colors.grey.withValues(alpha: .1),
           width: 1,
         ),
       ),
@@ -833,11 +833,11 @@ class _DiscussionPostState extends State<DiscussionPost> with SingleTickerProvid
                 height: 48,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [widget.categoryColor.withOpacity(0.15), widget.categoryColor.withOpacity(0.08)],
+                    colors: [widget.categoryColor.withValues(alpha: .15), widget.categoryColor.withValues(alpha: .08)],
                   ),
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
-                    color: widget.categoryColor.withOpacity(0.2),
+                    color: widget.categoryColor.withValues(alpha: .2),
                     width: 1,
                   ),
                 ),
@@ -875,7 +875,7 @@ class _DiscussionPostState extends State<DiscussionPost> with SingleTickerProvid
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
-                  color: CommunityPage.lightPurple.withOpacity(0.3),
+                  color: CommunityPage.lightPurple.withValues(alpha: .3),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
@@ -966,11 +966,11 @@ class _DiscussionPostState extends State<DiscussionPost> with SingleTickerProvid
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [widget.categoryColor.withOpacity(0.1), widget.categoryColor.withOpacity(0.05)],
+                    colors: [widget.categoryColor.withValues(alpha: .1), widget.categoryColor.withValues(alpha: .05)],
                   ),
                   borderRadius: BorderRadius.circular(15),
                   border: Border.all(
-                    color: widget.categoryColor.withOpacity(0.3),
+                    color: widget.categoryColor.withValues(alpha: .3),
                     width: 1,
                   ),
                 ),

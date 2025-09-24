@@ -6,12 +6,14 @@ class NeomorphicButton extends StatefulWidget {
   final String title;
   final IconData icon;
   final VoidCallback onTap;
+  final Widget? screenWidget;
 
   const NeomorphicButton({
     Key? key,
     required this.title,
     required this.icon,
     required this.onTap,
+     this.screenWidget,
   }) : super(key: key);
 
   @override
@@ -32,7 +34,17 @@ class _NeomorphicButtonState extends State<NeomorphicButton> {
       onTapDown: (_) => setState(() => _isPressed = true),
       onTapUp: (_) => setState(() => _isPressed = false),
       onTapCancel: () => setState(() => _isPressed = false),
-      onTap: widget.onTap,
+      onTap: () {
+        // NAVIGATE TO SCREEN IF PROVIDED, OTHERWISE USE CALLBACK
+        if (widget.screenWidget != null) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => widget.screenWidget!),
+          );
+        } else {
+          widget.onTap();
+        }
+      },
       child: AnimatedContainer(
         duration: Duration(milliseconds: 150),
         padding: EdgeInsets.all(24),

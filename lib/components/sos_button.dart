@@ -6,8 +6,9 @@ import 'package:google_fonts/google_fonts.dart';
 
 class SOSButton extends StatefulWidget {
   final VoidCallback onTap;
+  final Widget? screenWidget;
 
-  const SOSButton({Key? key, required this.onTap}) : super(key: key);
+  const SOSButton({Key? key, required this.onTap, this.screenWidget,}) : super(key: key);
 
   @override
   _SOSButtonState createState() => _SOSButtonState();
@@ -29,7 +30,17 @@ class _SOSButtonState extends State<SOSButton> {
         onTapDown: (_) => setState(() => _isPressed = true),
         onTapUp: (_) => setState(() => _isPressed = false),
         onTapCancel: () => setState(() => _isPressed = false),
-        onTap: widget.onTap,
+        onTap: () {
+          // NAVIGATE TO SCREEN IF PROVIDED, OTHERWISE USE CALLBACK
+          if (widget.screenWidget != null) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => widget.screenWidget!),
+            );
+          } else {
+            widget.onTap();
+          }
+        },
         child: AnimatedContainer(
           duration: Duration(milliseconds: 150),
           padding: EdgeInsets.all(24),
