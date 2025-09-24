@@ -151,7 +151,7 @@ class HomePage extends StatelessWidget {
             bottom: 0,
             left: 0,
             right: 0,
-            child: FloatingBottomBar(),
+            child: FloatingBottomBar(currentIndex: 0,),
           ),
         ],
       ),
