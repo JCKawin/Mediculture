@@ -74,6 +74,10 @@ class HomePage extends StatelessWidget {
 
                       // Scrollable reminder cards
                       Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: Colors.grey.withValues(alpha: .05),
+                        ),
                         height: 200,
                         child: ListView.builder(
                           scrollDirection: Axis.vertical,
@@ -171,9 +175,9 @@ class HomePage extends StatelessWidget {
                 gradient: LinearGradient(
                   colors: [
                     Colors.transparent,
-                    lightPurple.withOpacity(0.4),
-                    primaryPurple.withOpacity(0.6),
-                    lightPurple.withOpacity(0.4),
+                    primaryPurple.withValues(alpha: .6),
+                    primaryPurple.withValues(alpha: .6),
+                    primaryPurple.withValues(alpha: .6),
                     Colors.transparent,
                   ],
                 ),

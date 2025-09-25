@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mediculture_app/services/cart_manager.dart';
+import 'package:mediculture_app/components/floating_cart_bar.dart';
 
 class MedicineScreen extends StatefulWidget {
   @override
@@ -16,27 +18,39 @@ class _MedicineScreenState extends State<MedicineScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ivory,
-      body: CustomScrollView(
-        slivers: [
-          _buildAppBar(),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 20),
-                  _buildSearchBar(),
-                  SizedBox(height: 30),
-                  _buildCategories(),
-                  SizedBox(height: 30),
-                  _buildFeaturedMedicines(),
-                  SizedBox(height: 30),
-                  _buildNearbyPharmacies(),
-                  SizedBox(height: 100),
-                ],
+      extendBody: true,
+      body: Stack(
+        children: [
+          CustomScrollView(
+            slivers: [
+              _buildAppBar(),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 20),
+                      _buildSearchBar(),
+                      SizedBox(height: 30),
+                      _buildCategories(),
+                      SizedBox(height: 30),
+                      _buildFeaturedMedicines(),
+                      SizedBox(height: 30),
+                      _buildNearbyPharmacies(),
+                      SizedBox(height: 120), // Extra space for cart bar
+                    ],
+                  ),
+                ),
               ),
-            ),
+            ],
+          ),
+          // Floating Cart Bar
+          Positioned(
+            bottom: 17,
+            left: 0,
+            right: 0,
+            child: FloatingCartBar(),
           ),
         ],
       ),
@@ -277,6 +291,7 @@ class _MedicineScreenState extends State<MedicineScreen> {
   Widget _buildFeaturedMedicines() {
     final medicines = [
       {
+        'id': 'paracetamol_500',
         'name': 'Paracetamol 500mg',
         'price': '₹45',
         'rating': '4.8',
@@ -284,6 +299,7 @@ class _MedicineScreenState extends State<MedicineScreen> {
         'color': Colors.red,
       },
       {
+        'id': 'vitamin_d3',
         'name': 'Vitamin D3 Tablets',
         'price': '₹120',
         'rating': '4.6',
@@ -291,6 +307,7 @@ class _MedicineScreenState extends State<MedicineScreen> {
         'color': Colors.orange,
       },
       {
+        'id': 'cetrizine_10',
         'name': 'Cetrizine 10mg',
         'price': '₹32',
         'rating': '4.7',
@@ -320,13 +337,13 @@ class _MedicineScreenState extends State<MedicineScreen> {
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withValues(alpha:0.08),
+                color: Colors.grey.withOpacity(0.08),
                 spreadRadius: 0,
                 blurRadius: 15,
                 offset: Offset(0, 5),
               ),
             ],
-            border: Border.all(color: Colors.grey.withValues(alpha:0.1), width: 1),
+            border: Border.all(color: Colors.grey.withOpacity(0.1), width: 1),
           ),
           child: Row(
             children: [
@@ -334,10 +351,10 @@ class _MedicineScreenState extends State<MedicineScreen> {
                 width: 60,
                 height: 60,
                 decoration: BoxDecoration(
-                  color: (medicine['color'] as Color).withValues(alpha:0.1),
+                  color: (medicine['color'] as Color).withOpacity(0.1),
                   borderRadius: BorderRadius.circular(15),
                   border: Border.all(
-                    color: (medicine['color'] as Color).withValues(alpha:0.3),
+                    color: (medicine['color'] as Color).withOpacity(0.3),
                     width: 1,
                   ),
                 ),
@@ -398,20 +415,38 @@ class _MedicineScreenState extends State<MedicineScreen> {
                     ),
                   ),
                   SizedBox(height: 8),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [primaryPurple, darkPurple],
-                      ),
+                  Material(
+                    color: Colors.transparent,
+                    child: InkWell(
                       borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Text(
-                      'Add',
-                      style: GoogleFonts.poppins(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
+                      onTap: () {
+                        // Add item to cart
+                        CartManager().addItem(
+                          medicine['id'] as String,
+                          medicine['name'] as String,
+                          medicine['price'] as String,
+                          medicine['color'] as Color,
+                        );
+                        
+                        
+                      
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [primaryPurple, darkPurple],
+                          ),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Text(
+                          'Add',
+                          style: GoogleFonts.poppins(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -423,6 +458,7 @@ class _MedicineScreenState extends State<MedicineScreen> {
       ],
     );
   }
+
 
   Widget _buildNearbyPharmacies() {
     return Column(

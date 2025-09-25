@@ -354,20 +354,27 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                     ),
                   ),
                   SizedBox(height: 8),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [primaryPurple, darkPurple],
-                      ),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Text(
-                      'Select',
-                      style: GoogleFonts.poppins(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
+                  Material(
+                    child: InkWell(
+                      onTap: () => {
+                        // print("object")
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [primaryPurple, darkPurple],
+                          ),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Text(
+                          'Select',
+                          style: GoogleFonts.poppins(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -545,9 +552,10 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
       width: double.infinity,
       padding: EdgeInsets.symmetric(vertical: 16),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [primaryPurple, darkPurple],
-        ),
+        color: darkPurple,
+        // gradient: LinearGradient(
+        //   colors: [primaryPurple, darkPurple],
+        // ),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(

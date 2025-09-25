@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mediculture_app/components/floating_bottom_bar.dart';
+import 'package:mediculture_app/services/auth_service.dart';
+import 'package:mediculture_app/screens/auth/login_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -12,6 +14,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   static const Color lightPurple = Color(0xFFE8E2FF);
   static const Color ivory = Color(0xFFFFFDF7);
   static const Color darkPurple = Color(0xFF6C5CE7);
+
+  final AuthService _authService = AuthService();
 
   bool notificationsEnabled = true;
   bool locationEnabled = true;
@@ -284,9 +288,186 @@ class _SettingsScreenState extends State<SettingsScreen> {
           subtitle: 'App version and information',
           onTap: () {},
         ),
+        // Divider before logout
+        Divider(
+          color: Colors.grey.withValues(alpha: 0.2),
+          thickness: 1,
+          height: 1,
+        ),
+        // Logout button
+        _buildLogoutButton(),
       ],
     );
   }
+
+  Widget _buildLogoutButton() {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: _showLogoutDialog,
+        borderRadius: BorderRadius.circular(18),
+        child: Padding(
+          padding: EdgeInsets.all(16),
+          child: Row(
+            children: [
+              Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.red.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(
+                  Icons.logout_rounded,
+                  color: Colors.red,
+                  size: 22,
+                ),
+              ),
+              SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Logout',
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.red,
+                      ),
+                    ),
+                    SizedBox(height: 4),
+                    Text(
+                      'Sign out of your account',
+                      style: GoogleFonts.poppins(
+                        fontSize: 13,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Icon(
+                Icons.arrow_forward_ios,
+                size: 16,
+                color: Colors.grey[400],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showLogoutDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          backgroundColor: Colors.white,
+          title: Row(
+            children: [
+              Container(
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.red.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Icon(
+                  Icons.logout_rounded,
+                  color: Colors.red,
+                  size: 24,
+                ),
+              ),
+              SizedBox(width: 12),
+              Text(
+                'Logout',
+                style: GoogleFonts.poppins(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  color: darkPurple,
+                ),
+              ),
+            ],
+          ),
+          content: Text(
+            'Are you sure you want to sign out of your account?',
+            style: GoogleFonts.poppins(
+              fontSize: 16,
+              color: Colors.grey[700],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(
+                'Cancel',
+                style: GoogleFonts.poppins(
+                  color: Colors.grey[600],
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: _handleLogout,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                elevation: 0,
+              ),
+              child: Text(
+                'Logout',
+                style: GoogleFonts.poppins(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+Future<void> _handleLogout() async {
+  try {
+    // Close the confirmation dialog first
+    Navigator.of(context).pop();
+    
+    // Sign out from Firebase
+    await _authService.signOut();
+    
+    // Import the LoginScreen at the top of your file first:
+    // import 'package:mediculture_app/screens/auth/login_screen.dart';
+    
+    // Force navigation to login screen using MaterialPageRoute
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+      (route) => false,
+    );
+    
+  } catch (e) {
+    print('Logout error: $e');
+    
+    // Show error message
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Logout failed: ${e.toString()}'),
+        backgroundColor: Colors.red,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+    );
+  }
+}
+
+
 
   Widget _buildSection({required String title, required List<Widget> children}) {
     return Column(

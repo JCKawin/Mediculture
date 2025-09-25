@@ -38,11 +38,11 @@ class _FloatingBottomBarState extends State<FloatingBottomBar> {
       case 0:
         targetScreen = HomePage();
         break;
-      case 3:
-        targetScreen = SettingsScreen();
+      case 1:
+        targetScreen = ProfileScreen();
         break;
       case 2:
-        targetScreen = ProfileScreen();
+        targetScreen = SettingsScreen();
         break;
       default:
         targetScreen = HomePage();
@@ -83,8 +83,8 @@ class _FloatingBottomBarState extends State<FloatingBottomBar> {
         children: [
           _buildBottomBarItem(Icons.home_rounded, 'Home', 0),
           // _buildBottomBarItem(Icons.people_alt_rounded, 'Community', 1),
-          _buildBottomBarItem(Icons.person_rounded, 'Profile', 2),
-          _buildBottomBarItem(Icons.settings_rounded, 'Settings', 3),
+          _buildBottomBarItem(Icons.person_rounded, 'Profile', 1),
+          _buildBottomBarItem(Icons.settings_rounded, 'Settings', 2),
         ],
       ),
     );

@@ -350,50 +350,64 @@ class CommunityPage extends StatelessWidget {
         SizedBox(height: 12),
         Row(
           children: categories.map((category) => Expanded(
-            child: Container(
-              margin: EdgeInsets.only(right: categories.indexOf(category) == categories.length - 1 ? 0 : 8),
-              padding: EdgeInsets.symmetric(vertical: 18, horizontal: 8),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(18),
-                boxShadow: [
-                  BoxShadow(
-                    color: (category['color'] as Color).withValues(alpha: .1),
-                    spreadRadius: 0,
-                    blurRadius: 12,
-                    offset: Offset(0, 4),
+            child: Material(
+              child: InkWell(
+                borderRadius: BorderRadius.circular(15),
+                
+                child: Container(
+                  margin: EdgeInsets.only(right: categories.indexOf(category) == categories.length - 1 ? 0 : 8),
+                  padding: EdgeInsets.symmetric(vertical: 18, horizontal: 8),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(18),
+                    boxShadow: [
+                      BoxShadow(
+                        color: (category['color'] as Color).withValues(alpha: .1),
+                        spreadRadius: 0,
+                        blurRadius: 12,
+                        offset: Offset(0, 4),
+                      ),
+                    ],
+                    border: Border.all(
+                      color: (category['color'] as Color).withValues(alpha: .2),
+                      width: 1,
+                    ),
                   ),
-                ],
-                border: Border.all(
-                  color: (category['color'] as Color).withValues(alpha: .2),
-                  width: 1,
+                  child: Column(
+                    children: [
+                      Material(
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(12),
+                          onTap: () {
+                          print("Tapped!");
+                        },
+                          child: Container(
+                            padding: EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: (category['color'] as Color).withValues(alpha: .1),
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                            child: Icon(
+                              category['icon'] as IconData,
+                              color: category['color'] as Color,
+                              size: 24,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        category['name'] as String,
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.poppins(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: darkPurple,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              child: Column(
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: (category['color'] as Color).withValues(alpha: .1),
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    child: Icon(
-                      category['icon'] as IconData,
-                      color: category['color'] as Color,
-                      size: 24,
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    category['name'] as String,
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.poppins(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: darkPurple,
-                    ),
-                  ),
-                ],
               ),
             ),
           )).toList(),
@@ -962,24 +976,32 @@ class _DiscussionPostState extends State<DiscussionPost> with SingleTickerProvid
                 ],
               ),
               Spacer(),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [widget.categoryColor.withValues(alpha: .1), widget.categoryColor.withValues(alpha: .05)],
-                  ),
+              Material(
+                child: InkWell(
                   borderRadius: BorderRadius.circular(15),
-                  border: Border.all(
-                    color: widget.categoryColor.withValues(alpha: .3),
-                    width: 1,
-                  ),
-                ),
-                child: Text(
-                  'Read More',
-                  style: GoogleFonts.poppins(  // Using cool font
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    color: widget.categoryColor,
+                  onTap: () {
+                    print("Tapped!");
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [widget.categoryColor.withValues(alpha: .1), widget.categoryColor.withValues(alpha: .05)],
+                      ),
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(
+                        color: widget.categoryColor.withValues(alpha: .3),
+                        width: 1,
+                      ),
+                    ),
+                    child: Text(
+                      'Read More',
+                      style: GoogleFonts.poppins(  // Using cool font
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        color: widget.categoryColor,
+                      ),
+                    ),
                   ),
                 ),
               ),
