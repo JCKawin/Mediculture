@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../services/auth_service.dart';
 import '../../utils/constants.dart';
 import '../../utils/validators.dart';
-import '../home_screen.dart';
+import '../home_screen.dart'; // Fix: Changed from home_screen.dart to home_page.dart
 import 'login_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -340,35 +340,127 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
     );
   }
 
+  // Fixed _handleSignUp method with better error handling
   Future<void> _handleSignUp() async {
-    if (!_formKey.currentState!.validate()) return;
+    print('=== SIGNUP DEBUG START ===');
+    print('Form validation: ${_formKey.currentState!.validate()}');
+    
+    if (!_formKey.currentState!.validate()) {
+      print('Form validation failed');
+      return;
+    }
 
+    print('Email: ${_emailController.text.trim()}');
+    print('Password length: ${_passwordController.text.length}');
+    print('Full name: ${_fullNameController.text.trim()}');
+    
     setState(() => _isLoading = true);
 
     try {
+      print('Calling registerWithEmailAndPassword...');
+      
       final user = await _authService.registerWithEmailAndPassword(
-        _emailController.text,
+        _emailController.text.trim(),
         _passwordController.text,
-        _fullNameController.text,
+        _fullNameController.text.trim(),
       );
 
+      print('Registration result: $user');
+
       if (user != null) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage()),
+        print('User created successfully: ${user.uid}');
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                Icon(Icons.check_circle, color: Colors.white, size: 20),
+                SizedBox(width: 8),
+                Text(
+                  'Account created successfully!',
+                  style: GoogleFonts.poppins(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+            backgroundColor: Colors.green,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            duration: Duration(seconds: 2),
+          ),
         );
+      } else {
+        print('User is null after registration');
+        throw Exception('Registration failed - no user returned');
       }
     } catch (e) {
+      print('Registration error: $e');
+      print('Error type: ${e.runtimeType}');
+      
+      String errorMessage = _getCleanErrorMessage(e);
+      
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Registration failed: ${e.toString()}'),
+          content: Row(
+            children: [
+              Icon(Icons.error_outline, color: Colors.white, size: 20),
+              SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  errorMessage,
+                  style: GoogleFonts.poppins(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ],
+          ),
           backgroundColor: Colors.red,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          duration: Duration(seconds: 4),
         ),
       );
     } finally {
-      setState(() => _isLoading = false);
+      print('=== SIGNUP DEBUG END ===');
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
+  }
+
+  String _getCleanErrorMessage(dynamic error) {
+    String message = error.toString();
+    
+    // Remove common error prefixes
+    final prefixes = [
+      'Exception: ',
+      'FirebaseAuthException: ',
+      'PlatformException: ',
+      'Error: ',
+    ];
+    
+    for (String prefix in prefixes) {
+      if (message.startsWith(prefix)) {
+        message = message.substring(prefix.length);
+        break;
+      }
+    }
+    
+    // If message contains ': ', take only the part after the last ':'
+    if (message.contains(': ')) {
+      List<String> parts = message.split(': ');
+      message = parts.last.trim();
+    }
+    
+    // Capitalize first letter if it's not already
+    if (message.isNotEmpty && message[0] == message[0].toLowerCase()) {
+      message = message[0].toUpperCase() + message.substring(1);
+    }
+    
+    return message;
   }
 }

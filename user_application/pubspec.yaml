@@ -37,8 +37,8 @@ dependencies:
   avatar_glow: 2.0.1
   google_fonts: ^6.1.0
   timeline_tile: ^2.0.0
-  firebase_core: ^2.32.0
-  firebase_auth: ^4.15.3
+  firebase_core: ^2.24.2
+  firebase_auth: ^4.12.1
   cloud_firestore: ^4.13.6
   
 
@@ -51,7 +51,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^5.0.0
+  flutter_lints: ^3.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
