@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../models/user_model.dart';
 
 class AuthService {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  static final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // Get current user
   User? get currentUser => _auth.currentUser;
@@ -11,168 +11,158 @@ class AuthService {
   // Auth state changes stream
   Stream<User?> get authStateChanges => _auth.authStateChanges();
 
-  // Create user model from Firebase User
-  UserModel? _userFromFirebaseUser(User? user) {
-    return user != null ? UserModel(
-      uid: user.uid,
-      email: user.email ?? '',
-      displayName: user.displayName ?? '',
-      photoURL: user.photoURL ?? '',
-    ) : null;
-  }
-
-  // Sign in with email and password
+  // FIXED Sign in with PigeonUserDetails error handling
   Future<UserModel?> signInWithEmailAndPassword(String email, String password) async {
+    print('=== SIGN IN ATTEMPT ===');
+    print('Email: $email');
+    
     try {
+      // Attempt sign in
       UserCredential result = await _auth.signInWithEmailAndPassword(
         email: email.trim(),
         password: password,
       );
       
-      return _userFromFirebaseUser(result.user);
+      print('Sign in successful: ${result.user?.uid}');
+      return _createUserModel(result.user, email);
       
-    } on FirebaseAuthException catch (e) {
-      print('Firebase Auth Error: ${e.code} - ${e.message}');
-      
-      switch (e.code) {
-        case 'user-not-found':
-          throw Exception('No account found with this email address');
-        case 'wrong-password':
-          throw Exception('Incorrect password. Please try again');
-        case 'invalid-credential':
-          throw Exception('Invalid email or password');
-        case 'user-disabled':
-          throw Exception('This account has been disabled');
-        case 'too-many-requests':
-          throw Exception('Too many failed attempts. Please try again later');
-        case 'network-request-failed':
-          throw Exception('Network error. Please check your internet connection');
-        case 'invalid-email':
-          throw Exception('Please enter a valid email address');
-        case 'operation-not-allowed':
-          throw Exception('Email/password sign-in is not enabled');
-        default:
-          throw Exception('Login failed. Please try again');
-      }
     } catch (e) {
       print('Sign in error: $e');
-      if (e is Exception) {
-        rethrow;
+      
+      // Check if it's the PigeonUserDetails error but user is actually signed in
+      if (e.toString().contains('PigeonUserDetails') || e.toString().contains('type cast')) {
+        print('PigeonUserDetails error detected - checking if sign in actually succeeded...');
+        
+        // Wait a bit for Firebase to update
+        await Future.delayed(Duration(milliseconds: 500));
+        
+        // Check if user is now signed in
+        User? currentUser = _auth.currentUser;
+        if (currentUser != null) {
+          print('SUCCESS: User is actually signed in despite error: ${currentUser.uid}');
+          return _createUserModel(currentUser, email);
+        }
       }
-      throw Exception('Login failed. Please check your credentials and try again');
+      
+      // Handle Firebase Auth exceptions
+      if (e is FirebaseAuthException) {
+        _handleFirebaseAuthError(e);
+      } else {
+        throw Exception('Sign in failed. Please check your credentials and try again');
+      }
     }
+    
+    return null;
   }
 
-  // FIXED Register with email and password - handles the type casting issue
+  // FIXED Register with PigeonUserDetails error handling
   Future<UserModel?> registerWithEmailAndPassword(
     String email, 
     String password, 
     String fullName,
   ) async {
-    print('=== REGISTRATION START ===');
+    print('=== REGISTRATION ATTEMPT ===');
     print('Email: $email');
-    print('Password length: ${password.length}');
-    print('Full name: $fullName');
+    print('Name: $fullName');
     
     try {
-      // Create user - this is where the PigeonUserDetails error occurs
-      print('Creating Firebase Auth user...');
-      
+      // Attempt registration
       UserCredential result = await _auth.createUserWithEmailAndPassword(
         email: email.trim(),
         password: password,
       );
       
-      print('User created successfully: ${result.user?.uid}');
+      print('Registration successful: ${result.user?.uid}');
       
+      // Try to update display name (non-critical)
       if (result.user != null) {
-        User user = result.user!;
-        print('User object retrieved: ${user.uid}');
-        
-        // Update display name with error handling
         try {
-          print('Updating display name...');
-          await user.updateDisplayName(fullName);
-          print('Display name updated successfully');
+          await result.user!.updateDisplayName(fullName);
+          print('Display name updated');
         } catch (displayError) {
-          print('Display name update failed (continuing anyway): $displayError');
-          // Don't fail registration for this
+          print('Display name update failed (non-critical): $displayError');
         }
-        
-        // Create and return UserModel
-        UserModel userModel = UserModel(
-          uid: user.uid,
-          email: user.email ?? email,
-          displayName: fullName, // Use the provided name regardless
-          photoURL: user.photoURL ?? '',
-        );
-        
-        print('UserModel created: ${userModel.uid}');
-        print('=== REGISTRATION SUCCESS ===');
-        return userModel;
-        
-      } else {
-        throw Exception('User creation failed - no user data returned');
       }
       
-    } on FirebaseAuthException catch (e) {
-      print('Firebase Auth Exception: ${e.code} - ${e.message}');
+      return _createUserModel(result.user, email, fullName);
       
-      switch (e.code) {
-        case 'weak-password':
-          throw Exception('Password should be at least 6 characters long');
-        case 'email-already-in-use':
-          throw Exception('An account already exists with this email address');
-        case 'invalid-email':
-          throw Exception('Please enter a valid email address');
-        case 'operation-not-allowed':
-          throw Exception('Email registration is not enabled. Please contact support');
-        case 'network-request-failed':
-          throw Exception('Network error. Please check your internet connection');
-        default:
-          throw Exception('Registration failed: ${e.message ?? 'Please try again'}');
-      }
     } catch (e) {
-      print('Unexpected registration error: $e');
-      print('Error type: ${e.runtimeType}');
+      print('Registration error: $e');
       
-      // Handle the specific PigeonUserDetails error
-      if (e.toString().contains('PigeonUserDetails')) {
-        print('PigeonUserDetails error detected - trying workaround...');
+      // Check if it's the PigeonUserDetails error but user is actually created
+      if (e.toString().contains('PigeonUserDetails') || e.toString().contains('type cast')) {
+        print('PigeonUserDetails error detected - checking if registration actually succeeded...');
         
-        // Workaround: Check if user was actually created
-        try {
-          await Future.delayed(Duration(milliseconds: 500)); // Small delay
-          User? currentUser = _auth.currentUser;
+        // Wait a bit for Firebase to update
+        await Future.delayed(Duration(milliseconds: 500));
+        
+        // Check if user is now signed in (meaning registration succeeded)
+        User? currentUser = _auth.currentUser;
+        if (currentUser != null) {
+          print('SUCCESS: User was actually created despite error: ${currentUser.uid}');
           
-          if (currentUser != null) {
-            print('User was created successfully despite error: ${currentUser.uid}');
-            
-            // Try to update display name
-            try {
-              await currentUser.updateDisplayName(fullName);
-            } catch (_) {
-              print('Display name update failed in workaround');
-            }
-            
-            return UserModel(
-              uid: currentUser.uid,
-              email: currentUser.email ?? email,
-              displayName: fullName,
-              photoURL: currentUser.photoURL ?? '',
-            );
+          // Try to update display name
+          try {
+            await currentUser.updateDisplayName(fullName);
+            print('Display name updated in workaround');
+          } catch (displayError) {
+            print('Display name update failed in workaround: $displayError');
           }
-        } catch (workaroundError) {
-          print('Workaround failed: $workaroundError');
+          
+          return _createUserModel(currentUser, email, fullName);
         }
-        
-        throw Exception('Account creation completed but there was a technical issue. Please try logging in');
       }
       
-      if (e is Exception) {
-        rethrow;
+      // Handle Firebase Auth exceptions
+      if (e is FirebaseAuthException) {
+        _handleFirebaseAuthError(e);
+      } else {
+        throw Exception('Registration failed. Please try again');
       }
-      throw Exception('Registration failed: ${e.toString()}');
+    }
+    
+    return null;
+  }
+
+  // Helper method to create UserModel
+  UserModel? _createUserModel(User? user, String email, [String? displayName]) {
+    if (user == null) return null;
+    
+    return UserModel(
+      uid: user.uid,
+      email: user.email ?? email,
+      displayName: displayName ?? user.displayName ?? '',
+      photoURL: user.photoURL ?? '',
+    );
+  }
+
+  // Handle Firebase Auth errors
+  void _handleFirebaseAuthError(FirebaseAuthException e) {
+    print('Firebase Auth Error: ${e.code} - ${e.message}');
+    
+    switch (e.code) {
+      case 'user-not-found':
+        throw Exception('No account found with this email address');
+      case 'wrong-password':
+        throw Exception('Incorrect password. Please try again');
+      case 'invalid-credential':
+        throw Exception('Invalid email or password');
+      case 'user-disabled':
+        throw Exception('This account has been disabled');
+      case 'too-many-requests':
+        throw Exception('Too many failed attempts. Please try again later');
+      case 'network-request-failed':
+        throw Exception('Network error. Please check your internet connection');
+      case 'invalid-email':
+        throw Exception('Please enter a valid email address');
+      case 'email-already-in-use':
+        throw Exception('An account already exists with this email address');
+      case 'weak-password':
+        throw Exception('Password should be at least 6 characters long');
+      case 'operation-not-allowed':
+        throw Exception('Email authentication is not enabled');
+      default:
+        throw Exception('Authentication failed: ${e.message ?? 'Please try again'}');
     }
   }
 
@@ -191,41 +181,17 @@ class AuthService {
   Future<void> resetPassword(String email) async {
     try {
       await _auth.sendPasswordResetEmail(email: email.trim());
-      print('Password reset email sent successfully');
+      print('Password reset email sent');
     } on FirebaseAuthException catch (e) {
-      print('Reset password error: ${e.code} - ${e.message}');
-      
-      switch (e.code) {
-        case 'user-not-found':
-          throw Exception('No account found with this email address');
-        case 'invalid-email':
-          throw Exception('Please enter a valid email address');
-        case 'network-request-failed':
-          throw Exception('Network error. Please check your internet connection');
-        default:
-          throw Exception('Failed to send reset email. Please try again');
-      }
+      _handleFirebaseAuthError(e);
     } catch (e) {
-      print('Reset password error: $e');
-      if (e is Exception) {
-        rethrow;
-      }
       throw Exception('Failed to send reset email. Please try again');
     }
   }
 
-  // Check if user is signed in
-  bool get isSignedIn {
-    return _auth.currentUser != null;
-  }
-
-  // Get current user's display name
-  String get currentUserDisplayName {
-    return _auth.currentUser?.displayName ?? '';
-  }
-
-  // Get current user's email
-  String get currentUserEmail {
-    return _auth.currentUser?.email ?? '';
-  }
+  // Helper getters
+  bool get isSignedIn => _auth.currentUser != null;
+  String get currentUserEmail => _auth.currentUser?.email ?? '';
+  String get currentUserDisplayName => _auth.currentUser?.displayName ?? '';
+  String get currentUserUID => _auth.currentUser?.uid ?? '';
 }
