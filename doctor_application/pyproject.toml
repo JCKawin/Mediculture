@@ -5,31 +5,20 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-  "customtkinter>=5.2.2",
-  "pymongo>=4.6.0",
-  "motor>=3.3.2", 
-  "firebase-admin>=6.4.0",
-  "google-auth>=2.23.4",
-  "google-auth-oauthlib>=1.1.0",
-  "google-auth-httplib2>=0.2.0",
-  "google-cloud-firestore>=2.13.1",
-  "python-dateutil>=2.8.2",
-  "Pillow>=10.1.0",
-  "pydantic>=2.5.0",
-  "pandas>=2.1.4",
-  "numpy>=1.25.0",
-  "requests>=2.31.0",
-  "httpx>=0.25.0",
-  "python-dotenv>=1.0.0",
-  "pyyaml>=6.0.1",
-  "structlog>=23.2.0",
-  "rich>=13.7.0",
-  "cryptography>=41.0.7",
-  "bcrypt>=4.1.2",
-  "openpyxl>=3.1.2",
-  "python-multipart>=0.0.6",
-  "python-slugify>=8.0.1",
-  "click>=8.1.7"
+    # Web UI Framework
+    "streamlit>=1.28.0",
+    "streamlit-option-menu>=0.3.6",
+    "streamlit-authenticator>=0.2.3",
+    
+    # Data handling
+    "requests>=2.31.0",
+    "pandas>=2.1.4",
+    "python-dateutil>=2.8.2",
+    
+    # Configuration
+    "python-dotenv>=1.0.0",
+    "pydantic>=2.5.0",
+    
+    # Utilities
+    "plotly>=5.17.0",
 ]
-
-

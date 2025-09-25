@@ -1,3 +1,4 @@
+// models/Medicine.js
 const mongoose = require('mongoose');
 
 const medicineSchema = new mongoose.Schema({
@@ -10,21 +11,25 @@ const medicineSchema = new mongoose.Schema({
   category: {
     type: String,
     required: true,
-    enum: ['Pain Relief', 'Vitamins', 'Antibiotics', 'Skincare', 'Other']
+    enum: ['Pain Relief', 'Vitamins', 'Antibiotics', 'Skincare', 'Heart Health', 'Diabetes', 'Other']
   },
   description: String,
   price: {
     type: Number,
     required: true
   },
+  originalPrice: Number,
+  discount: {
+    type: Number,
+    default: 0
+  },
   dosage: String,
+  packaging: String,
   sideEffects: [String],
   contraindications: [String],
-  prescription: {
-    required: {
-      type: Boolean,
-      default: false
-    }
+  prescriptionRequired: {
+    type: Boolean,
+    default: false
   },
   stock: {
     type: Number,
@@ -34,7 +39,9 @@ const medicineSchema = new mongoose.Schema({
   rating: {
     average: {
       type: Number,
-      default: 0
+      default: 0,
+      min: 0,
+      max: 5
     },
     count: {
       type: Number,
@@ -44,9 +51,13 @@ const medicineSchema = new mongoose.Schema({
   isActive: {
     type: Boolean,
     default: true
-  }
+  },
+  tags: [String]
 }, {
   timestamps: true
 });
+
+// Index for better search performance
+medicineSchema.index({ name: 'text', genericName: 'text', category: 'text' });
 
 module.exports = mongoose.model('Medicine', medicineSchema);

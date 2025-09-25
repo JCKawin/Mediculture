@@ -1,13 +1,21 @@
+// models/Appointment.js
 const mongoose = require('mongoose');
 
 const appointmentSchema = new mongoose.Schema({
   userId: {
-    type: String,
+    type: String, // Firebase UID
     required: true
   },
   doctorId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Doctor',
+    ref: 'Doctor'
+  },
+  doctorName: {
+    type: String,
+    required: true
+  },
+  specialty: {
+    type: String,
     required: true
   },
   appointmentDate: {
@@ -23,10 +31,6 @@ const appointmentSchema = new mongoose.Schema({
     enum: ['consultation', 'checkup', 'follow-up', 'emergency'],
     default: 'consultation'
   },
-  specialty: {
-    type: String,
-    required: true
-  },
   symptoms: [String],
   notes: String,
   status: {
@@ -35,8 +39,14 @@ const appointmentSchema = new mongoose.Schema({
     default: 'scheduled'
   },
   fees: {
-    consultation: Number,
-    total: Number
+    consultation: {
+      type: Number,
+      default: 0
+    },
+    total: {
+      type: Number,
+      default: 0
+    }
   },
   prescription: {
     medicines: [{
@@ -44,6 +54,7 @@ const appointmentSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Medicine'
       },
+      medicineName: String,
       dosage: String,
       frequency: String,
       duration: String

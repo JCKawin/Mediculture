@@ -1,3 +1,4 @@
+// models/User.js
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
@@ -17,7 +18,13 @@ const userSchema = new mongoose.Schema({
   },
   phoneNumber: String,
   dateOfBirth: Date,
-  gender: String,
+  gender: {
+    type: String,
+    enum: ['male', 'female', 'other']
+  },
+  height: String,
+  weight: String,
+  profilePicture: String,
   address: {
     street: String,
     city: String,
@@ -26,7 +33,10 @@ const userSchema = new mongoose.Schema({
     country: String
   },
   medicalInfo: {
-    bloodGroup: String,
+    bloodGroup: {
+      type: String,
+      enum: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']
+    },
     allergies: [String],
     chronicConditions: [String],
     currentMedications: [String],
@@ -34,6 +44,16 @@ const userSchema = new mongoose.Schema({
       name: String,
       phone: String,
       relationship: String
+    }
+  },
+  healthStats: {
+    bloodPressure: String,
+    heartRate: String,
+    bloodSugar: String,
+    bmi: String,
+    lastUpdated: {
+      type: Date,
+      default: Date.now
     }
   },
   preferences: {
@@ -49,6 +69,15 @@ const userSchema = new mongoose.Schema({
       type: String,
       default: 'Light'
     }
+  },
+  membershipType: {
+    type: String,
+    enum: ['Basic', 'Premium', 'Gold'],
+    default: 'Basic'
+  },
+  isActive: {
+    type: Boolean,
+    default: true
   }
 }, {
   timestamps: true
