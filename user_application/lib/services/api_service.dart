@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ApiService {
-  static const String baseUrl = 'http://your-backend-url.com/api'; // Update with your deployed URL
+  static const String baseUrl = 'medicult-db-production.up.railway.app/api'; // Update with your deployed URL
   // For local development: 'http://10.0.2.2:3000/api' (Android emulator)
   // For local development: 'http://localhost:3000/api' (iOS simulator)
   
