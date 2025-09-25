@@ -73,39 +73,7 @@ export const Dashboard = ({ onSectionChange }: DashboardProps) => {
         <p className="text-muted-foreground">Pharmacy management system overview</p>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard
-          title="Total Medications"
-          value={stats.totalMedications}
-          description="Items in inventory"
-          icon={Package}
-          color="primary"
-        />
-        <StatCard
-          title="Low Stock Alerts"
-          value={stats.lowStockItems}
-          description="Require attention"
-          icon={AlertTriangle}
-          color="warning"
-        />
-        <StatCard
-          title="Pending Orders"
-          value={stats.pendingOrders}
-          description="Awaiting processing"
-          icon={Clock}
-          color="secondary"
-        />
-        <StatCard
-          title="Completed Today"
-          value={stats.completedToday}
-          description="Orders dispensed"
-          icon={CheckCircle}
-          color="success"
-          trend="+12% from yesterday"
-        />
-      </div>
-
+      
       {/* Critical Alerts */}
       {criticalAlerts.length > 0 && (
         <Card className="border-critical">
@@ -177,6 +145,40 @@ export const Dashboard = ({ onSectionChange }: DashboardProps) => {
             </div>
           </CardContent>
         </Card>
+
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <StatCard
+          title="Total Medications"
+          value={stats.totalMedications}
+          description="Items in inventory"
+          icon={Package}
+          color="primary"
+        />
+        <StatCard
+          title="Low Stock Alerts"
+          value={stats.lowStockItems}
+          description="Require attention"
+          icon={AlertTriangle}
+          color="warning"
+        />
+        <StatCard
+          title="Pending Orders"
+          value={stats.pendingOrders}
+          description="Awaiting processing"
+          icon={Clock}
+          color="secondary"
+        />
+        <StatCard
+          title="Completed Today"
+          value={stats.completedToday}
+          description="Orders dispensed"
+          icon={CheckCircle}
+          color="success"
+          trend="+12% from yesterday"
+        />
+      </div>
+
 
         {/* Quick Actions */}
         <Card>
