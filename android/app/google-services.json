@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1057626184111",
+    "project_id": "mediculture-db-fd16f",
+    "storage_bucket": "mediculture-db-fd16f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1057626184111:android:05564e8f2ce7424639775a",
+        "android_client_info": {
+          "package_name": "com.example.mediculture_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcYVkimdk4sSaaiZw7BbnqRnsphBW19ag"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
