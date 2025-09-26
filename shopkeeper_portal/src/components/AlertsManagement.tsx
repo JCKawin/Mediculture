@@ -14,17 +14,19 @@ import {
   RefreshCw,
   X
 } from 'lucide-react';
-import { mockAlerts } from '@/data/mockData';
+import { useAlerts } from '@/hooks/useApi';
+import { useToast } from '@/hooks/use-toast';
 import { InventoryAlert } from '@/types/pharmacy';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export const AlertsManagement = () => {
-  const [alerts, setAlerts] = useState<InventoryAlert[]>(mockAlerts);
+  const { data: alerts, loading, refetch } = useAlerts();
+  const { toast } = useToast();
   const [severityFilter, setSeverityFilter] = useState<string>('all');
   const [typeFilter, setTypeFilter] = useState<string>('all');
 
   // Filter alerts based on severity and type
-  const filteredAlerts = alerts.filter(alert => {
+  const filteredAlerts = (alerts || []).filter(alert => {
     const matchesSeverity = severityFilter === 'all' || alert.severity === severityFilter;
     const matchesType = typeFilter === 'all' || alert.type === typeFilter;
     return matchesSeverity && matchesType;
@@ -87,12 +89,21 @@ export const AlertsManagement = () => {
   };
 
   const handleDismissAlert = (alertId: string) => {
-    setAlerts(alerts.filter(alert => alert.id !== alertId));
+    // API call would be made here to dismiss the alert
+    toast({
+      title: "Alert Dismissed",
+      description: "The alert has been successfully dismissed.",
+    });
+    refetch();
   };
 
   const handleResolveAlert = (alertId: string) => {
     // In a real app, this would trigger appropriate actions like reordering stock
-    setAlerts(alerts.filter(alert => alert.id !== alertId));
+    toast({
+      title: "Alert Resolved",
+      description: "The alert has been resolved.",
+    });
+    refetch();
   };
 
   const formatDateTime = (dateString: string) => {

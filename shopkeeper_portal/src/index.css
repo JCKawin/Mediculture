@@ -2,55 +2,75 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Pharmacy Management System Design System - Medical Grade Interface */
+/* Modern Pharmacy Management System - Enhanced Medical Interface */
 
 @layer base {
   :root {
-    /* Medical Interface Color Palette */
+    /* Modern Medical Color Palette */
     --background: 210 20% 98%;
-    --foreground: 210 15% 20%;
+    --foreground: 210 15% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 210 15% 20%;
+    --card-foreground: 210 15% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 210 15% 20%;
+    --popover-foreground: 210 15% 15%;
 
-    /* Medical Primary - Professional Blue */
-    --primary: 210 85% 55%;
+    /* Enhanced Primary - Modern Medical Blue */
+    --primary: 212 95% 58%;
     --primary-foreground: 0 0% 98%;
+    --primary-glow: 212 85% 65%;
     
-    /* Medical Secondary - Calming Teal */
-    --secondary: 180 25% 95%;
-    --secondary-foreground: 180 45% 25%;
+    /* Modern Secondary - Sophisticated Teal */
+    --secondary: 180 30% 95%;
+    --secondary-foreground: 180 50% 20%;
 
-    --muted: 210 25% 96%;
-    --muted-foreground: 210 15% 45%;
+    --muted: 210 30% 96%;
+    --muted-foreground: 210 15% 40%;
 
-    --accent: 180 50% 88%;
-    --accent-foreground: 180 45% 25%;
+    --accent: 180 55% 88%;
+    --accent-foreground: 180 50% 20%;
 
-    /* Medical Alert Colors */
-    --destructive: 0 85% 60%;
+    /* Enhanced Alert Colors */
+    --destructive: 0 90% 58%;
     --destructive-foreground: 0 0% 98%;
     
-    /* Success/Health Green */
-    --success: 145 75% 45%;
+    /* Modern Success Green */
+    --success: 142 80% 45%;
     --success-foreground: 0 0% 98%;
+    --success-glow: 142 70% 55%;
     
-    /* Warning/Attention Orange */
-    --warning: 35 85% 55%;
+    /* Modern Warning Orange */
+    --warning: 32 90% 58%;
     --warning-foreground: 0 0% 98%;
+    --warning-glow: 32 80% 65%;
     
-    /* Critical/Emergency Red */
-    --critical: 0 85% 60%;
+    /* Enhanced Critical Red */
+    --critical: 0 90% 58%;
     --critical-foreground: 0 0% 98%;
+    --critical-glow: 0 80% 65%;
 
-    --border: 210 25% 90%;
-    --input: 210 25% 94%;
-    --ring: 210 85% 55%;
+    --border: 210 30% 88%;
+    --input: 210 30% 92%;
+    --ring: 212 95% 58%;
 
-    --radius: 0.75rem;
+    --radius: 0.875rem;
+
+    /* Modern Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    --gradient-success: linear-gradient(135deg, hsl(var(--success)), hsl(var(--success-glow)));
+    --gradient-warning: linear-gradient(135deg, hsl(var(--warning)), hsl(var(--warning-glow)));
+    --gradient-critical: linear-gradient(135deg, hsl(var(--critical)), hsl(var(--critical-glow)));
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(210 25% 98%));
+    
+    /* Modern Shadows */
+    --shadow-elegant: 0 10px 30px -10px hsl(var(--primary) / 0.15);
+    --shadow-glow: 0 0 40px hsl(var(--primary-glow) / 0.2);
+    --shadow-critical: 0 8px 25px -8px hsl(var(--critical) / 0.25);
+    
+    /* Animation Variables */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
     --sidebar-background: 0 0% 98%;
 

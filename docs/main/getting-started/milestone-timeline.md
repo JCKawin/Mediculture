@@ -120,4 +120,10 @@ Extreme emergencies should be able to invoke autonomous drones with auto-flight 
 
 The load on the manual operators would be reduced due to the introduction of AI-based smart classification.
 {% endstep %}
+
+{% step %}
+### SOS Application for EMTs
+
+Expanding the SOS systems to allow EMTs and Certified First Aid Responders to request for additional assistance and backup for high risk jobs when needed on-demand with full guarentee and low levels of automation cutting through the red tape at key areas for validation.
+{% endstep %}
 {% endstepper %}

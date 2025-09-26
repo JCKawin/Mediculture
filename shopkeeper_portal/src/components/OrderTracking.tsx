@@ -15,17 +15,17 @@ import {
   RefreshCw,
   Eye
 } from 'lucide-react';
-import { mockOrders } from '@/data/mockData';
+import { useOrders } from '@/hooks/useApi';
 import { Order, OrderPriority, OrderStatus } from '@/types/pharmacy';
 
 export const OrderTracking = () => {
-  const [orders, setOrders] = useState<Order[]>(mockOrders);
+  const { data: orders, loading, refetch } = useOrders();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [priorityFilter, setPriorityFilter] = useState<string>('all');
 
   // Filter orders based on search and filters
-  const filteredOrders = orders.filter(order => {
+  const filteredOrders = (orders || []).filter(order => {
     const matchesSearch = order.patientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          order.id.toLowerCase().includes(searchTerm.toLowerCase());
     
