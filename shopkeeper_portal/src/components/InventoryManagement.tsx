@@ -13,11 +13,11 @@ import {
   RefreshCw,
   Plus
 } from 'lucide-react';
-import { mockMedications } from '@/data/mockData';
+import { useMedications } from '@/hooks/useApi';
 import { Medication } from '@/types/pharmacy';
 
 export const InventoryManagement = () => {
-  const [medications, setMedications] = useState<Medication[]>(mockMedications);
+  const { data: medications, loading, refetch } = useMedications();
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [stockFilter, setStockFilter] = useState<string>('all');

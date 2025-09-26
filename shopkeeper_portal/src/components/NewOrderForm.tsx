@@ -16,12 +16,14 @@ import {
   User,
   Package
 } from 'lucide-react';
-import { mockMedications } from '@/data/mockData';
+import { useMedications, useCreateOrder } from '@/hooks/useApi';
 import { Medication, OrderPriority, OrderItem } from '@/types/pharmacy';
 import { useToast } from '@/hooks/use-toast';
 
 export const NewOrderForm = () => {
   const { toast } = useToast();
+  const { data: medications, loading: medicationsLoading } = useMedications();
+  const { createOrder, loading: creatingOrder } = useCreateOrder();
   const [patientName, setPatientName] = useState('');
   const [patientId, setPatientId] = useState('');
   const [priority, setPriority] = useState<OrderPriority>('routine');
@@ -30,7 +32,7 @@ export const NewOrderForm = () => {
   const [medicationSearch, setMedicationSearch] = useState('');
 
   // Filter medications based on search term
-  const filteredMedications = mockMedications.filter(med =>
+  const filteredMedications = (medications || []).filter(med =>
     med.name.toLowerCase().includes(medicationSearch.toLowerCase()) ||
     med.genericName?.toLowerCase().includes(medicationSearch.toLowerCase()) ||
     med.category.toLowerCase().includes(medicationSearch.toLowerCase())
@@ -74,7 +76,7 @@ export const NewOrderForm = () => {
   };
 
   const validateStock = (medicationId: string, quantity: number) => {
-    const medication = mockMedications.find(med => med.id === medicationId);
+    const medication = medications?.find(med => med.id === medicationId);
     if (!medication) return false;
     return medication.stockQuantity >= quantity;
   };
@@ -104,7 +106,7 @@ export const NewOrderForm = () => {
     // Check stock availability
     for (const item of orderItems) {
       if (!validateStock(item.medicationId, item.quantity)) {
-        const medication = mockMedications.find(med => med.id === item.medicationId);
+        const medication = medications?.find(med => med.id === item.medicationId);
         toast({
           title: "Stock Insufficient",
           description: `Not enough stock for ${medication?.name}. Available: ${medication?.stockQuantity}`,
@@ -302,7 +304,7 @@ export const NewOrderForm = () => {
             <CardContent>
               <div className="space-y-4">
                 {orderItems.map((item) => {
-                  const medication = mockMedications.find(med => med.id === item.medicationId);
+                  const medication = medications?.find(med => med.id === item.medicationId);
                   const hasStockIssue = !validateStock(item.medicationId, item.quantity);
 
                   return (
