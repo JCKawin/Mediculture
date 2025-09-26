@@ -302,7 +302,7 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0" ,() => {
   console.log(`🚀 MEDICULTURE API running on http://localhost:${PORT}`);
   console.log(`📋 Health check: http://localhost:${PORT}/api/health`);
   console.log(`💊 Test medicines: http://localhost:${PORT}/api/medicines`);
