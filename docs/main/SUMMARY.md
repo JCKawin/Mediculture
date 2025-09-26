@@ -11,7 +11,7 @@
 ## Components
 
 * [Tri-Delivery System](components/tri-delivery-system.md)
-* [AI Integration Possibility](components/ai-integration-possibility.md)
+* [SOS and our approach to AI](components/sos-and-our-approach-to-ai.md)
 * [Medical Community and Forums](components/medical-community-and-forums.md)
 
 ## Technology Stacks

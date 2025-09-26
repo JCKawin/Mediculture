@@ -13,5 +13,6 @@ Hi there, and thanks for taking an interest to know more about our team.
 5. Faheem Abdullah\
    Animations and Hardware Enthusiast
 6. T Shivani (She/Her)\
-   mySQL
+   Database Management
 
+Thanks to our team, we were able to move ahead with our project at breakneck speed.
