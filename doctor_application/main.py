@@ -40,7 +40,7 @@ class APIClient:
         except Exception as e:
             return {"status": "Error", "error": str(e)}
     
-    def get_appointments(self, firebase_uid: str = None, status: str = None, limit: int = 50) -> Dict:
+    def get_appointments(self, firebase_uid: str = "", status: str = "", limit: int = 50) -> Dict:
         """Get appointments from backend"""
         try:
             params = {"limit": limit}
@@ -84,8 +84,8 @@ class APIClient:
             st.error(f"Error creating appointment: {e}")
             return {}
     
-    def get_medicines(self, page: int = 1, limit: int = 20, search: str = None, 
-                     category: str = None) -> Dict:
+    def get_medicines(self, page: int = 1, limit: int = 20, search: str = "", 
+                     category: str = "") -> Dict:
         """Get medicines from backend"""
         try:
             params = {"page": page, "limit": limit}
