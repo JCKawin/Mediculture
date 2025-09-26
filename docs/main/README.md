@@ -19,17 +19,17 @@ layout:
 # Mediculture
 
 {% hint style="info" %}
-This is a Smart India Hackathon project that is currently under active development. We encourage to take the contents of this page with a bit of salt, as the development cycle is happening rapidly and there may be breaking changes.
+This is a Smart India Hackathon project that is currently under active development. We encourage you to take the contents of this page with a bit of salt, as the development cycle is happening rapidly and there may be breaking changes.
 {% endhint %}
 
 ### What is Mediculture?
 
-In our pursuit for Athmanirbar Bharat, we wish to implement Bharat's first "One Nation, One Medical System" idea. It is an integrated medical system leveraging the modern enhancements in today's world.
+In our pursuit of Atmanirbhar Bharat, we wish to implement Bharat's first "One Nation, One Medical System" idea. It is an integrated medical system leveraging the modern enhancements in today's world.
 
 ### What are we envisioning?
 
-1. A stable, secure and scalable system that can always adapt to the latest enhancements and ideations in this fast paced world.
-2. A single-source of truth with multiple structures to bear the load as per requirement.
+1. A stable, secure, and scalable system that can always adapt to the latest enhancements and ideations in this fast-paced world.
+2. A single source of truth with multiple structures to bear the load as per requirement.
 3. To limit latency and time consumption by maybe integrating AI to save lives in the process.
 
 {% hint style="success" %}
@@ -57,11 +57,11 @@ In our pursuit for Athmanirbar Bharat, we wish to implement Bharat's first "One 
 \
 This project mainly claims to serve the following members of society:
 
-1. Middle aged people who mainly prefer convenience over cost due to their busy schedules and tight constraints.
-2. Elderly people who are mostly under medication for chronic diseases such as cardiac related issues, diabetes, cancer etc.
-3. To handle emergency situations instantly which would save lives hassle-free
+1. Middle-aged people who mainly prefer convenience over cost due to their busy schedules and tight constraints.
+2. Elderly people who are mostly under medication for chronic diseases such as cardiac-related issues, diabetes, cancer, etc.
+3. To handle emergencies instantly, which would save lives hassle-free
 4. Authorized doctors who are ready to consult patients.
 
-Data can also be extract and used for trend analysis in the public domain with prior permission. Collected data helps governments and health institutions plan, predict outbreaks, and improve policies.
+Data can also be extracted and used for trend analysis in the public domain with prior permission. Collected data helps governments and health institutions plan, predict outbreaks, and improve policies.
 
-The project connects institutions, improves convenience, and strengthens cooperation to provide smoother, reliable services; among public and private sectors.
+The project connects institutions, improves convenience, and strengthens cooperation to provide smoother, reliable services; among the public and private sectors.

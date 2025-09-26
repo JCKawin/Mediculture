@@ -13,13 +13,3 @@
 * [Tri-Delivery System](components/tri-delivery-system.md)
 * [SOS and our approach to AI](components/sos-and-our-approach-to-ai.md)
 * [Medical Community and Forums](components/medical-community-and-forums.md)
-
-## Technology Stacks
-
-* [Core Idea](technology-stacks/core-idea.md)
-* [Frontend](technology-stacks/frontend.md)
-* [Backend](technology-stacks/backend.md)
-* [Load Balancing](technology-stacks/load-balancing.md)
-* [Database](technology-stacks/database.md)
-* [AI Framework](technology-stacks/ai-framework.md)
-* [Drone Systems](technology-stacks/drone-systems.md)

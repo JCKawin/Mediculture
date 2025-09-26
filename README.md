@@ -4,17 +4,17 @@
 
 This is a Smart India Hackathon project that is currently under active development. We encourage to take the contents of this page with a bit of salt, as the development cycle is happening rapidly and there may be breaking changes.
 
-### What is Mediculture?
+## What is Mediculture?
 
 In our pursuit for Atmanirbhar Bharat, we wish to implement Bharat's first "One Nation, One Medical System" idea. It is an integrated medical system leveraging the modern enhancements in today's world.
 
-### What are we envisioning?
+## What are we envisioning?
 
 1. A stable, secure and scalable system that can always adapt to the latest enhancements and ideations in this fast paced world.
 2. A single-source of truth with multiple structures to bear the load as per requirement.
 3. To limit latency and time consumption by maybe integrating AI to save lives in the process.
 
-### Project Data
+## Project Data
 
 * Problem Statement ID – 25114
 * Problem Statement Title - Student Innovation
@@ -24,7 +24,7 @@ In our pursuit for Atmanirbhar Bharat, we wish to implement Bharat's first "One 
 * Team Name – Mediculture
 * Tentative Name - Super Fast Medicine Delivery System
 
-### Jump right in!
+## Jump right in!
 
 <table>
         <tr>
@@ -37,7 +37,7 @@ In our pursuit for Atmanirbhar Bharat, we wish to implement Bharat's first "One 
         </tr>
     </table>
 
-### Feasibility and Scope
+## Feasibility and Scope
 
 This project mainly claims to serve the following members of society:
 

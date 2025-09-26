@@ -11,8 +11,8 @@ icon: layer-plus
 Revolutionizing emergency medicine delivery through drone technology, AI-driven logistics, and doctor-verified digital support for real-time, life-saving access.\
 
 
-* Drone Technology– High-speed, blade-safe drones deliver medicines across a few kilometers in 3 – 4 minutes, ensuring life-critical supplies reach on time.
-* AI Route Navigation– AI analyzes traffic, weather, and airspace for the fastest and safest delivery paths.
+* Drone Technology – High-speed, blade-safe drones deliver medicines across a few kilometers in 3 – 4 minutes, ensuring life-critical supplies reach on time.
+* AI Route Navigation – AI analyzes traffic, weather, and airspace for the fastest and safest delivery paths.
 * Emergency Health Network – On-demand prescriptions and verified doctor consultations through an integrated telemedicine platform.
 * Doctor-Verified Social Community – Certified medical experts share trusted health updates, preventing misinformation and false assumptions.
 * Real-Time Location Tracking – Secure tracking of medicines from dispatch to doorstep, ensuring authenticity and safety.
@@ -23,7 +23,7 @@ Revolutionizing emergency medicine delivery through drone technology, AI-driven 
 
 <summary>Frontend (Next.js + Flutter)</summary>
 
-Next.js gives us high-performance dynamic web apps. Flutter lets us build user friendly, native-like mobile apps from a single codebase.
+Next.js gives us high-performance dynamic web apps. Flutter lets us build user-friendly, native-like mobile apps from a single codebase.
 
 </details>
 

@@ -10,13 +10,13 @@ icon: app-store-ios
 {% step %}
 ### Team Formation&#x20;
 
-We first formed the Team on September 05, 2025. Our team consists of K S Aditiaya, J C Kawin, Dhivyan Jeshua, Sugeeth Jayaraj, T S Shivani,&#x20;
+We first formed the Team on September 05, 2025. Our team consists of K S Aditiaya, J C Kawin, Faheem Abdullah, Dhivyan Jeshua, Sugeeth Jayaraj, and T S Shivani.&#x20;
 {% endstep %}
 
 {% step %}
 ### Preliminary Research and Content Application
 
-We settled on a creating a software platform that integrates multiple services while innovating new ones.
+We settled on creating a software platform that integrates multiple services while innovating new ones.
 
 During this time, J C Kawin and Dhivyan Jeshua held extensive discussions on what topic to select.
 
@@ -26,11 +26,11 @@ We finally settled on "Student Innovation" in the medical field.&#x20;
 {% step %}
 ### Research in the field
 
-Originally, the plan was to innovate in the hardware sector by creating an integrated medical drone delivery system that would be consumer facing while also helping out EMTs. We thought that it could be nationalised during times of NATIONAL Emergency.
+Originally, the plan was to innovate in the hardware sector by creating an integrated medical drone delivery system that would be consumer-facing while also helping out EMTs. We thought that it could be nationalised during times of NATIONAL Emergency.
 
-However, after extensive research in the field, we figured out that the current drone space includes ethical and moral considerations that are currently beyond the scope of the timebound nature of Phase 1.
+However, after extensive research in the field, we figured out that the current drone space includes ethical and moral considerations that are currently beyond the scope of the time-bound nature of Phase 1.
 
-So we reworked out timelines and revamped the project status. We are now operating under the Software Category and with plans to shift to hardware when needed.
+So we reworked our timelines and revamped the project status. We are now operating under the Software Category and with plans to shift to hardware when needed.
 {% endstep %}
 
 {% step %}
@@ -38,13 +38,13 @@ So we reworked out timelines and revamped the project status. We are now operati
 
 We created our first version of the SIH Presentation and generated our MVP pitch by September 23, 2025.
 
-We held discussions with our mentor and with Sathya sir (Robotics) to create a structure and formulate a plan for the roadmap and future of our plan.
+We held discussions with our mentor and with Sathya sir (Robotics) to create a structure and formulate a plan for the roadmap and future of our project.
 {% endstep %}
 
 {% step %}
 ### The Actual Pitch
 
-On September 24, 2025; we pitched our idea to the VITSIH Round 1 Panel, with a consumer facing app\
+On September 24, 2025, we pitched our idea to the VITSIH Round 1 Panel, with a consumer-facing app\
 We were lucky that our idea got accepted and selected.
 
 
@@ -55,25 +55,25 @@ We were lucky that our idea got accepted and selected.
 
 {% stepper %}
 {% step %}
-### Consumer facing App with SOS enabled
+### Consumer-facing App with SOS enabled
 
-To build and complete a consumer facing app complete with authentication and data storage based off Firebase.
+To build and complete a consumer-facing app, complete with authentication and data storage based on Firebase.
 
-The app should serve as a single point of contact for all services related to the medical field, including ordering medicines etc.
+The app should serve as a single point of contact for all services related to the medical field, including ordering medicines, etc.
 {% endstep %}
 
 {% step %}
 ### Operator facing Web Console
 
-To build an operator facing web console with a good feature set, with working SOS management systems. They will be able to take over calls, oversee automated proceedings, and intervene and override classify and redirect manually.
+To build an operator-facing web console with a good feature set, with working SOS management systems. They will be able to take over calls, oversee automated proceedings, intervene and override, classify and redirect manually.
 
-The SOS system APIs should be open-ended, ensuring that Device OEMs can tap into the configurations and build those systems into the OS level, enabling and leveraging features like global OS-level gesture based&#x20;
+The SOS system APIs should be open-ended, ensuring that Device OEMs can tap into the configurations and build those systems into the OS level, enabling and leveraging features like global OS-level gesture-based&#x20;
 {% endstep %}
 
 {% step %}
 ### Doctor Facing Web Console
 
-To build a Doctor Facing Web Console that classifies SOS cases based on preliminary triage levels and also overall overview of all cases that are on his waitlist.&#x20;
+To build a Doctor-Facing Web Console that classifies SOS cases based on preliminary triage levels, and also overall overview of all cases that are on his waitlist.&#x20;
 
 In the future, it should be able to expand into a Hospital Integrated Management Suite.
 {% endstep %}
@@ -85,7 +85,7 @@ The job of the integrated pharmacy Web app management system:
 
 1. Expose the current inventory status upon placing an order.
 2. Placing manual orders.
-3. Live order status tracking with an integrated triage system which prioritizes orders placed via SOS on high priority.
+3. Live order status tracking with an integrated triage system, which prioritizes orders placed via SOS on high priority.
 {% endstep %}
 
 {% step %}
@@ -105,7 +105,7 @@ Where doctors can bust myths and provide updates related to the world of medicin
 {% step %}
 ### Lab Technician&#x20;
 
-A portal via which lab technicians get prioritised tasks and the ability to append their comments, notes and observations to existing cases, thus creating a single trust system with proper data transfer that immediately populates the doctor portal.
+A portal via which lab technicians get prioritised tasks and the ability to append their comments, notes, and observations to existing cases, thus creating a single trust system with proper data transfer that immediately populates the doctor portal.
 {% endstep %}
 
 {% step %}
@@ -116,7 +116,7 @@ Extreme emergencies should be able to invoke autonomous drones with auto-flight 
 {% endstep %}
 
 {% step %}
-### AI based Smarter Classification of Request
+### AI-based Smarter Classification of Request
 
 The load on the manual operators would be reduced due to the introduction of AI-based smart classification.
 {% endstep %}
@@ -124,6 +124,6 @@ The load on the manual operators would be reduced due to the introduction of AI-
 {% step %}
 ### SOS Application for EMTs
 
-Expanding the SOS systems to allow EMTs and Certified First Aid Responders to request for additional assistance and backup for high risk jobs when needed on-demand with full guarentee and low levels of automation cutting through the red tape at key areas for validation.
+Expanding the SOS systems to allow EMTs and Certified First Aid Responders to request additional assistance and backup for high-risk jobs when needed on demand, with full guarantee and low levels of automation, cutting through the red tape at key areas for validation.
 {% endstep %}
 {% endstepper %}
