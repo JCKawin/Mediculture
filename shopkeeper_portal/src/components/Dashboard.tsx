@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -11,14 +12,30 @@ import {
   TrendingUp,
   Activity
 } from 'lucide-react';
-import { mockDashboardStats, mockOrders, mockAlerts } from '@/data/mockData';
+import { fetchDashboardStats } from '@/lib/utils';
+
 
 interface DashboardProps {
   onSectionChange: (section: string) => void;
 }
 
 export const Dashboard = ({ onSectionChange }: DashboardProps) => {
-  const stats = mockDashboardStats;
+  const [stats, setStats] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetchDashboardStats()
+      .then(data => {
+        setStats(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
+
   const recentOrders = mockOrders.slice(0, 3);
   const criticalAlerts = mockAlerts.filter(alert => alert.severity === 'critical');
 
@@ -64,6 +81,9 @@ export const Dashboard = ({ onSectionChange }: DashboardProps) => {
       default: return 'secondary';
     }
   };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div className="space-y-6">

@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { fetchOrders } from '@/lib/utils';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -19,10 +20,36 @@ import { mockOrders } from '@/data/mockData';
 import { Order, OrderPriority, OrderStatus } from '@/types/pharmacy';
 
 export const OrderTracking = () => {
-  const [orders, setOrders] = useState<Order[]>(mockOrders);
+  const [orders, setOrders] = useState<Order[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [priorityFilter, setPriorityFilter] = useState<string>('all');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const ws = new WebSocket(import.meta.env.VITE_WS_URL);
+    
+    ws.onmessage = (event) => {
+      const updatedOrder = JSON.parse(event.data);
+      setOrders(current => 
+        current.map(order => 
+          order.id === updatedOrder.id ? updatedOrder : order
+        )
+      );
+    };
+
+    fetchOrders()
+      .then(data => {
+        setOrders(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error('Failed to fetch orders:', err);
+        setLoading(false);
+      });
+
+    return () => ws.close();
+  }, []);
 
   // Filter orders based on search and filters
   const filteredOrders = orders.filter(order => {
@@ -104,6 +131,8 @@ export const OrderTracking = () => {
     
     return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
   });
+
+  if (loading) return <div>Loading orders...</div>;
 
   return (
     <div className="space-y-6">
