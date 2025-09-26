@@ -16,4 +16,4 @@ For other triage cases that are still classified as Red level (high priority) bu
 
 Finally, for the lowest priority cases or for routine logistical needs, such as resupplying regional medical centers or fulfilling non-emergency requests, the system can proceed with the standard, heavy-vehicle shipping system. This conventional approach is most cost-effective and suitable for bulk orders and less time-sensitive deliveries, allowing the highly agile drone and two-wheeler resources to remain exclusively focused on saving lives in the critical, high-urgency tiers.
 
-<figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
