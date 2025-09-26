@@ -4,9 +4,8 @@
 
 ## Getting Started
 
-* [Quickstart](getting-started/quickstart.md)
-* [Publish your docs](getting-started/publish-your-docs.md)
 * [Milestone Timeline](getting-started/milestone-timeline.md)
+* [Technology Stacks](getting-started/technology-stacks.md)
 
 ## Basics
 
