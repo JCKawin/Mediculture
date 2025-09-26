@@ -10,7 +10,7 @@ icon: app-store-ios
 {% step %}
 ### Team Formation&#x20;
 
-We first formed the Team on September 05, 2025. Our team consists of K S Aditiaya, J C Kawin, Dhivyan Jeshua, Sugeeth Jayaraj, and T S Shivani.&#x20;
+We first formed the Team on September 05, 2025. Our team consists of K S Aditiaya, J C Kawin, Faheem Abdullah, Dhivyan Jeshua, Sugeeth Jayaraj, and T S Shivani.&#x20;
 {% endstep %}
 
 {% step %}
