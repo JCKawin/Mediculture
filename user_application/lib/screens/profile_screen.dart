@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mediculture_app/components/floating_bottom_bar.dart';
 import 'package:mediculture_app/services/api_service.dart';
 import 'package:mediculture_app/services/auth_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -16,6 +17,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   static const Color darkPurple = Color(0xFF6C5CE7);
 
   final AuthService _authService = AuthService();
+  final User? currentUser = FirebaseAuth.instance.currentUser;
   
   // User data from database
   Map<String, dynamic>? userData;
@@ -30,13 +32,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> _loadUserData() async {
+    if (currentUser == null) {
+      setState(() {
+        errorMessage = 'User not authenticated';
+        isLoading = false;
+      });
+      return;
+    }
+
     try {
       setState(() {
         isLoading = true;
         errorMessage = '';
       });
 
-      // Load user profile from MongoDB
+      // Create user profile if doesn't exist
+      await _ensureUserProfile();
+
+      // Load user profile and appointments from MongoDB
       final profile = await ApiService.getUserProfile();
       final appointments = await ApiService.getUserAppointments();
 
@@ -58,34 +71,78 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
+  Future<void> _ensureUserProfile() async {
+    try {
+      // Check if user exists in MongoDB, if not create profile
+      final existingProfile = await ApiService.getUserProfile();
+      
+      if (existingProfile == null) {
+        print('Creating new user profile for: ${currentUser!.uid}');
+        // Create new user profile in MongoDB
+        final newUserData = {
+          'firebaseUid': currentUser!.uid,
+          'email': currentUser!.email ?? '',
+          'displayName': currentUser!.displayName ?? 'User',
+          'phoneNumber': currentUser!.phoneNumber ?? '',
+          'membershipType': 'Basic',
+          'isActive': true,
+          'healthStats': {
+            'bloodPressure': '120/80',
+            'heartRate': '72',
+            'bloodSugar': '95',
+            'bmi': '22.4',
+            'lastUpdated': DateTime.now().toIso8601String()
+          },
+          'preferences': {
+            'notifications': true,
+            'language': 'English',
+            'theme': 'Light'
+          }
+        };
+        
+        await ApiService.updateUserProfile(newUserData);
+        print('User profile created successfully');
+      } else {
+        print('User profile already exists');
+      }
+    } catch (e) {
+      print('Error ensuring user profile: $e');
+    }
+  }
+
   // Get user's display name from Firebase Auth or database
   String get displayName {
-    if (userData != null && userData!['displayName'] != null) {
+    if (userData != null && userData!['displayName'] != null && userData!['displayName'].toString().isNotEmpty) {
       return userData!['displayName'];
     }
-    return _authService.currentUserDisplayName.isNotEmpty 
-        ? _authService.currentUserDisplayName 
-        : 'User';
+    if (currentUser?.displayName != null && currentUser!.displayName!.isNotEmpty) {
+      return currentUser!.displayName!;
+    }
+    return 'User';
   }
 
   // Get user's email
   String get userEmail {
-    if (userData != null && userData!['email'] != null) {
+    if (userData != null && userData!['email'] != null && userData!['email'].toString().isNotEmpty) {
       return userData!['email'];
     }
-    return _authService.currentUserEmail;
+    return currentUser?.email ?? 'user@example.com';
   }
 
   // Calculate age from date of birth
   String get userAge {
     if (userData != null && userData!['dateOfBirth'] != null) {
-      DateTime dob = DateTime.parse(userData!['dateOfBirth']);
-      int age = DateTime.now().year - dob.year;
-      if (DateTime.now().month < dob.month || 
-          (DateTime.now().month == dob.month && DateTime.now().day < dob.day)) {
-        age--;
+      try {
+        DateTime dob = DateTime.parse(userData!['dateOfBirth']);
+        int age = DateTime.now().year - dob.year;
+        if (DateTime.now().month < dob.month || 
+            (DateTime.now().month == dob.month && DateTime.now().day < dob.day)) {
+          age--;
+        }
+        return age.toString();
+      } catch (e) {
+        print('Error parsing date of birth: $e');
       }
-      return age.toString();
     }
     return '25'; // Default
   }
@@ -93,6 +150,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   // Get user's medical info
   Map<String, dynamic> get medicalInfo {
     return userData?['medicalInfo'] ?? {};
+  }
+
+  // Get user's health stats
+  Map<String, dynamic> get healthStats {
+    return userData?['healthStats'] ?? {
+      'bloodPressure': '120/80',
+      'heartRate': '72',
+      'bloodSugar': '95',
+      'bmi': '22.4'
+    };
   }
 
   @override
@@ -128,7 +195,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             bottom: 0,
             left: 0,
             right: 0,
-            child: FloatingBottomBar(currentIndex: 3),
+            child: FloatingBottomBar(currentIndex: 1),
           ),
         ],
       ),
@@ -187,28 +254,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _buildContent() {
-    return CustomScrollView(
-      slivers: [
-        _buildAppBar(),
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.0),
-            child: Column(
-              children: [
-                SizedBox(height: 20),
-                _buildProfileHeader(),
-                SizedBox(height: 30),
-                _buildHealthStats(),
-                SizedBox(height: 30),
-                _buildQuickActions(),
-                SizedBox(height: 30),
-                _buildRecentActivity(),
-                SizedBox(height: 120),
-              ],
+    return RefreshIndicator(
+      onRefresh: _loadUserData,
+      color: primaryPurple,
+      child: CustomScrollView(
+        slivers: [
+          _buildAppBar(),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
+              child: Column(
+                children: [
+                  SizedBox(height: 20),
+                  _buildProfileHeader(),
+                  SizedBox(height: 30),
+                  _buildHealthStats(),
+                  SizedBox(height: 30),
+                  _buildQuickActions(),
+                  SizedBox(height: 30),
+                  _buildRecentActivity(),
+                  SizedBox(height: 120),
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -278,24 +349,48 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ],
                     ),
-                    GestureDetector(
-                      onTap: () => _showEditProfileDialog(),
-                      child: Container(
-                        padding: EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.2),
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(
-                            color: Colors.white.withValues(alpha: 0.3),
-                            width: 1,
+                    Row(
+                      children: [
+                        GestureDetector(
+                          onTap: _loadUserData,
+                          child: Container(
+                            padding: EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withValues(alpha: 0.2),
+                              borderRadius: BorderRadius.circular(15),
+                              border: Border.all(
+                                color: Colors.white.withValues(alpha: 0.3),
+                                width: 1,
+                              ),
+                            ),
+                            child: Icon(
+                              Icons.refresh_rounded,
+                              color: Colors.white,
+                              size: 20,
+                            ),
                           ),
                         ),
-                        child: Icon(
-                          Icons.edit_rounded,
-                          color: Colors.white,
-                          size: 24,
+                        SizedBox(width: 8),
+                        GestureDetector(
+                          onTap: () => _showEditProfileDialog(),
+                          child: Container(
+                            padding: EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withValues(alpha: 0.2),
+                              borderRadius: BorderRadius.circular(15),
+                              border: Border.all(
+                                color: Colors.white.withValues(alpha: 0.3),
+                                width: 1,
+                              ),
+                            ),
+                            child: Icon(
+                              Icons.edit_rounded,
+                              color: Colors.white,
+                              size: 20,
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                   ],
                 ),
@@ -325,39 +420,74 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       child: Column(
         children: [
-          Container(
-            width: 100,
-            height: 100,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  primaryPurple.withValues(alpha: 0.2),
-                  primaryPurple.withValues(alpha: 0.1)
-                ],
-              ),
-              borderRadius: BorderRadius.circular(50),
-              border: Border.all(color: primaryPurple.withValues(alpha: 0.3), width: 2),
-            ),
-            child: userData?['photoURL'] != null && userData!['photoURL'].isNotEmpty
-                ? ClipRRect(
-                    borderRadius: BorderRadius.circular(48),
-                    child: Image.network(
-                      userData!['photoURL'],
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Icon(
-                          Icons.person_rounded,
-                          size: 50,
-                          color: primaryPurple,
-                        );
-                      },
-                    ),
-                  )
-                : Icon(
-                    Icons.person_rounded,
-                    size: 50,
-                    color: primaryPurple,
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              Container(
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      primaryPurple.withValues(alpha: 0.2),
+                      primaryPurple.withValues(alpha: 0.1)
+                    ],
                   ),
+                  borderRadius: BorderRadius.circular(50),
+                  border: Border.all(color: primaryPurple.withValues(alpha: 0.3), width: 2),
+                ),
+                child: userData?['profilePicture'] != null && userData!['profilePicture'].toString().isNotEmpty
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(48),
+                        child: Image.network(
+                          userData!['profilePicture'],
+                          fit: BoxFit.cover,
+                          width: 96,
+                          height: 96,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Icon(
+                              Icons.person_rounded,
+                              size: 50,
+                              color: primaryPurple,
+                            );
+                          },
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Center(
+                              child: CircularProgressIndicator(
+                                color: primaryPurple,
+                                value: loadingProgress.expectedTotalBytes != null
+                                    ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                                    : null,
+                              ),
+                            );
+                          },
+                        ),
+                      )
+                    : Icon(
+                        Icons.person_rounded,
+                        size: 50,
+                        color: primaryPurple,
+                      ),
+              ),
+              if (currentUser?.emailVerified == false)
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: Container(
+                    padding: EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                      color: Colors.orange,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.warning,
+                      size: 16,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+            ],
           ),
           SizedBox(height: 16),
           Text(
@@ -376,6 +506,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
               color: Colors.grey[600],
             ),
           ),
+          if (currentUser?.emailVerified == false) ...[
+            SizedBox(height: 8),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: Colors.orange.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: Colors.orange.withValues(alpha: 0.3)),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.warning, size: 14, color: Colors.orange),
+                  SizedBox(width: 4),
+                  Text(
+                    'Email not verified',
+                    style: GoogleFonts.poppins(
+                      fontSize: 12,
+                      color: Colors.orange[700],
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
           SizedBox(height: 12),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -399,11 +555,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
               _buildProfileStat('Age', userAge),
               _buildProfileStat(
                 'Height', 
-                userData?['height'] ?? '5\'8"'
+                userData?['height']?.toString() ?? '5\'8"'
               ),
               _buildProfileStat(
                 'Weight', 
-                userData?['weight'] ?? '70kg'
+                userData?['weight']?.toString() ?? '70kg'
               ),
             ],
           ),
@@ -436,20 +592,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _buildHealthStats() {
-    // Get health data from database or use defaults
-    final healthData = userData?['healthStats'] ?? {};
-    
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Health Overview',
-          style: GoogleFonts.poppins(
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-            color: darkPurple,
-            letterSpacing: 0.3,
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Health Overview',
+              style: GoogleFonts.poppins(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: darkPurple,
+                letterSpacing: 0.3,
+              ),
+            ),
+            TextButton.icon(
+              onPressed: _showUpdateHealthStatsDialog,
+              icon: Icon(Icons.edit, size: 16, color: primaryPurple),
+              label: Text(
+                'Update',
+                style: GoogleFonts.poppins(
+                  color: primaryPurple,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14,
+                ),
+              ),
+            ),
+          ],
         ),
         SizedBox(height: 16),
         Row(
@@ -457,7 +627,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Expanded(
               child: _buildHealthCard(
                 'Blood Pressure',
-                healthData['bloodPressure'] ?? '120/80',
+                healthStats['bloodPressure'] ?? '120/80',
                 'mmHg',
                 Colors.red,
                 Icons.favorite,
@@ -467,7 +637,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Expanded(
               child: _buildHealthCard(
                 'Heart Rate',
-                healthData['heartRate'] ?? '72',
+                healthStats['heartRate'] ?? '72',
                 'bpm',
                 Colors.pink,
                 Icons.monitor_heart,
@@ -481,7 +651,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Expanded(
               child: _buildHealthCard(
                 'Blood Sugar',
-                healthData['bloodSugar'] ?? '95',
+                healthStats['bloodSugar'] ?? '95',
                 'mg/dL',
                 Colors.orange,
                 Icons.water_drop,
@@ -491,32 +661,66 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Expanded(
               child: _buildHealthCard(
                 'BMI',
-                _calculateBMI(),
-                _getBMIStatus(),
+                healthStats['bmi'] ?? '22.4',
+                _getBMIStatus(healthStats['bmi']),
                 Colors.green,
                 Icons.straighten,
               ),
             ),
           ],
         ),
+        if (healthStats['lastUpdated'] != null) ...[
+          SizedBox(height: 12),
+          Text(
+            'Last updated: ${_formatLastUpdated(healthStats['lastUpdated'])}',
+            style: GoogleFonts.poppins(
+              fontSize: 12,
+              color: Colors.grey[500],
+            ),
+          ),
+        ],
       ],
     );
   }
 
-  String _calculateBMI() {
-    if (userData?['weight'] != null && userData?['height'] != null) {
-      // Simple BMI calculation (you'd need to parse height and weight properly)
-      return '22.4'; // Placeholder
+  String _getBMIStatus(dynamic bmiValue) {
+    if (bmiValue == null) return 'Normal';
+    
+    double bmi;
+    if (bmiValue is String) {
+      bmi = double.tryParse(bmiValue) ?? 22.4;
+    } else if (bmiValue is num) {
+      bmi = bmiValue.toDouble();
+    } else {
+      return 'Normal';
     }
-    return '22.4';
-  }
-
-  String _getBMIStatus() {
-    double bmi = 22.4; // You'd calculate this properly
+    
     if (bmi < 18.5) return 'Underweight';
     if (bmi < 25) return 'Normal';
     if (bmi < 30) return 'Overweight';
     return 'Obese';
+  }
+
+  String _formatLastUpdated(String? dateString) {
+    if (dateString == null) return 'Never';
+    
+    try {
+      DateTime date = DateTime.parse(dateString);
+      DateTime now = DateTime.now();
+      Duration difference = now.difference(date);
+      
+      if (difference.inDays > 0) {
+        return '${difference.inDays} day${difference.inDays > 1 ? 's' : ''} ago';
+      } else if (difference.inHours > 0) {
+        return '${difference.inHours} hour${difference.inHours > 1 ? 's' : ''} ago';
+      } else if (difference.inMinutes > 0) {
+        return '${difference.inMinutes} minute${difference.inMinutes > 1 ? 's' : ''} ago';
+      } else {
+        return 'Just now';
+      }
+    } catch (e) {
+      return 'Unknown';
+    }
   }
 
   Widget _buildHealthCard(String title, String value, String unit, Color color, IconData icon) {
@@ -608,7 +812,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               _buildActionItem(Icons.medical_information, 'Medical Records', 'View your health records'),
               _buildActionItem(Icons.receipt_long, 'Order History', 'Track your past orders'),
               _buildActionItem(Icons.favorite_border, 'Health Goals', 'Set and track goals'),
-              _buildActionItem(Icons.family_restroom, 'Family Health', 'Manage family profiles'),
+              _buildActionItem(Icons.settings, 'Settings', 'Manage your preferences'),
+              _buildActionItem(Icons.logout, 'Sign Out', 'Sign out of your account', isSignOut: true),
             ],
           ),
         ),
@@ -616,13 +821,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _buildActionItem(IconData icon, String title, String subtitle) {
+  Widget _buildActionItem(IconData icon, String title, String subtitle, {bool isSignOut = false}) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: () {
-          // Handle action tap
-          print('Tapped: $title');
+          if (isSignOut) {
+            _showSignOutDialog();
+          } else {
+            _handleActionTap(title);
+          }
         },
         borderRadius: BorderRadius.circular(18),
         child: Padding(
@@ -632,10 +840,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Container(
                 padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: primaryPurple.withValues(alpha: 0.1),
+                  color: isSignOut 
+                      ? Colors.red.withValues(alpha: 0.1)
+                      : primaryPurple.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Icon(icon, color: primaryPurple, size: 22),
+                child: Icon(
+                  icon, 
+                  color: isSignOut ? Colors.red : primaryPurple, 
+                  size: 22
+                ),
               ),
               SizedBox(width: 16),
               Expanded(
@@ -647,7 +861,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       style: GoogleFonts.poppins(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
-                        color: darkPurple,
+                        color: isSignOut ? Colors.red : darkPurple,
                       ),
                     ),
                     SizedBox(height: 4),
@@ -661,11 +875,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ],
                 ),
               ),
-              Icon(
-                Icons.arrow_forward_ios,
-                size: 16,
-                color: Colors.grey[400],
-              ),
+              if (!isSignOut)
+                Icon(
+                  Icons.arrow_forward_ios,
+                  size: 16,
+                  color: Colors.grey[400],
+                ),
             ],
           ),
         ),
@@ -692,7 +907,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             if (recentAppointments.isNotEmpty)
               TextButton(
                 onPressed: () {
-                  // Navigate to full activity list
+                  // Navigate to appointments screen
+                  Navigator.pushNamed(context, '/appointments');
                 },
                 child: Text(
                   'View All',
@@ -707,16 +923,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
         SizedBox(height: 16),
         
         // Show real appointment data or placeholder
-        if (recentAppointments.isEmpty)
+        if (isLoading)
+          _buildActivitySkeleton()
+        else if (recentAppointments.isEmpty)
           _buildEmptyActivityState()
         else
           ...recentAppointments.take(3).map((appointment) => _buildActivityItem(
             appointment['type'] ?? 'Appointment',
-            appointment['doctorName'] ?? 'Doctor Appointment',
+            '${appointment['doctorName'] ?? 'Doctor'} - ${appointment['specialty'] ?? 'Consultation'}',
             _formatAppointmentDate(appointment['appointmentDate']),
             appointment['status'] ?? 'scheduled',
           )).toList(),
       ],
+    );
+  }
+
+  Widget _buildActivitySkeleton() {
+    return Column(
+      children: List.generate(3, (index) => Container(
+        margin: EdgeInsets.only(bottom: 12),
+        padding: EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.grey[200],
+          borderRadius: BorderRadius.circular(16),
+        ),
+        height: 80,
+      )),
     );
   }
 
@@ -751,6 +983,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
             style: GoogleFonts.poppins(
               fontSize: 14,
               color: Colors.grey[500],
+            ),
+          ),
+          SizedBox(height: 16),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/appointments');
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: primaryPurple,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            child: Text(
+              'Book Appointment',
+              style: GoogleFonts.poppins(
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
         ],
@@ -859,10 +1110,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
         return 'Yesterday';
       } else {
         int daysAgo = now.difference(date).inDays;
-        return '$daysAgo days ago';
+        if (daysAgo > 0) {
+          return '$daysAgo days ago';
+        } else {
+          return '${daysAgo.abs()} days from now';
+        }
       }
     } catch (e) {
       return 'Unknown date';
+    }
+  }
+
+  void _handleActionTap(String title) {
+    switch (title) {
+      case 'Medical Records':
+        _showComingSoonDialog('Medical Records');
+        break;
+      case 'Order History':
+        _showComingSoonDialog('Order History');
+        break;
+      case 'Health Goals':
+        _showComingSoonDialog('Health Goals');
+        break;
+      case 'Settings':
+        Navigator.pushNamed(context, '/settings');
+        break;
     }
   }
 
@@ -871,16 +1143,190 @@ class _ProfileScreenState extends State<ProfileScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Edit Profile'),
-          content: Text('Profile editing will be implemented here.'),
+          title: Row(
+            children: [
+              Icon(Icons.edit, color: primaryPurple),
+              SizedBox(width: 8),
+              Text(
+                'Edit Profile',
+                style: GoogleFonts.poppins(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  color: darkPurple,
+                ),
+              ),
+            ],
+          ),
+          content: Text(
+            'Profile editing functionality will be implemented in the next update. You can update your basic information here.',
+            style: GoogleFonts.poppins(fontSize: 14),
+          ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text('Close'),
+              child: Text(
+                'Close',
+                style: GoogleFonts.poppins(color: primaryPurple),
+              ),
             ),
           ],
         );
       },
     );
+  }
+
+  void _showUpdateHealthStatsDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Row(
+            children: [
+              Icon(Icons.health_and_safety, color: primaryPurple),
+              SizedBox(width: 8),
+              Text(
+                'Update Health Stats',
+                style: GoogleFonts.poppins(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: darkPurple,
+                ),
+              ),
+            ],
+          ),
+          content: Text(
+            'Health stats updating functionality will be implemented soon. You can track your vital signs here.',
+            style: GoogleFonts.poppins(fontSize: 14),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(
+                'Close',
+                style: GoogleFonts.poppins(color: primaryPurple),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showSignOutDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Row(
+            children: [
+              Icon(Icons.logout, color: Colors.red),
+              SizedBox(width: 8),
+              Text(
+                'Sign Out',
+                style: GoogleFonts.poppins(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.red,
+                ),
+              ),
+            ],
+          ),
+          content: Text(
+            'Are you sure you want to sign out?',
+            style: GoogleFonts.poppins(fontSize: 16),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(
+                'Cancel',
+                style: GoogleFonts.poppins(color: Colors.grey[600]),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                Navigator.of(context).pop();
+                await _handleSignOut();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: Text(
+                'Sign Out',
+                style: GoogleFonts.poppins(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showComingSoonDialog(String feature) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Row(
+            children: [
+              Icon(Icons.upcoming, color: primaryPurple),
+              SizedBox(width: 8),
+              Text(
+                'Coming Soon',
+                style: GoogleFonts.poppins(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  color: darkPurple,
+                ),
+              ),
+            ],
+          ),
+          content: Text(
+            '$feature functionality will be available in the next update.',
+            style: GoogleFonts.poppins(fontSize: 16),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(
+                'OK',
+                style: GoogleFonts.poppins(color: primaryPurple),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _handleSignOut() async {
+    try {
+      await _authService.signOut();
+      // Navigation will be handled automatically by AuthWrapper
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Signed out successfully'),
+          backgroundColor: Colors.green,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+      );
+    } catch (e) {
+      print('Sign out error: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to sign out'),
+          backgroundColor: Colors.red,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+      );
+    }
   }
 }
