@@ -48,6 +48,20 @@ In our pursuit for Athmanirbar Bharat, we wish to implement Bharat's first "One 
 
 
 
-### Jump right in
+### Jump right in!
 
-<table data-view="cards"><thead><tr><th></th><th></th><th></th><th data-hidden data-card-cover data-type="files"></th><th data-hidden></th><th data-hidden data-card-target data-type="content-ref"></th></tr></thead><tbody><tr><td><h4><i class="fa-bolt">:bolt:</i></h4></td><td><strong>Milestone</strong></td><td>Join and see our plans</td><td></td><td></td><td><a href="getting-started/milestone-timeline.md">milestone-timeline.md</a></td></tr><tr><td><h4><i class="fa-leaf">:leaf:</i></h4></td><td><strong>Editor basics</strong></td><td>Learn the basics of GitBook</td><td></td><td></td><td><a href="https://github.com/GitbookIO/gitbook-templates/blob/main/product-docs/broken-reference/README.md">https://github.com/GitbookIO/gitbook-templates/blob/main/product-docs/broken-reference/README.md</a></td></tr><tr><td><h4><i class="fa-globe-pointer">:globe-pointer:</i></h4></td><td><strong>Publish your docs</strong></td><td>Share your docs online</td><td></td><td></td><td><a href="broken-reference">Broken link</a></td></tr></tbody></table>
+<table data-view="cards"><thead><tr><th></th><th></th><th></th><th data-hidden data-card-cover data-type="files"></th><th data-hidden></th><th data-hidden data-card-target data-type="content-ref"></th></tr></thead><tbody><tr><td><h4><i class="fa-bolt">:bolt:</i></h4></td><td><strong>Milestone</strong></td><td>Join and see our plans</td><td></td><td></td><td><a href="getting-started/milestone-timeline.md">milestone-timeline.md</a></td></tr><tr><td><h4><i class="fa-leaf">:leaf:</i></h4></td><td><strong>Members</strong></td><td>See who's behind this Project!</td><td></td><td></td><td><a href="getting-started/members.md">members.md</a></td></tr><tr><td><h4><i class="fa-globe-pointer">:globe-pointer:</i></h4></td><td><strong>Code</strong></td><td>Take a look our repo!</td><td></td><td></td><td><a href="https://github.com/JCKawin/Mediculture">https://github.com/JCKawin/Mediculture</a></td></tr></tbody></table>
+
+### Feasibility and Scope
+
+\
+This project mainly claims to serve the following members of society:
+
+1. Middle aged people who mainly prefer convenience over cost due to their busy schedules and tight constraints.
+2. Elderly people who are mostly under medication for chronic diseases such as cardiac related issues, diabetes, cancer etc.
+3. To handle emergency situations instantly which would save lives hassle-free
+4. Authorized doctors who are ready to consult patients.
+
+Data can also be extract and used for trend analysis in the public domain with prior permission. Collected data helps governments and health institutions plan, predict outbreaks, and improve policies.
+
+The project connects institutions, improves convenience, and strengthens cooperation to provide smoother, reliable services; among public and private sectors.
