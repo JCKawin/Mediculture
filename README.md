@@ -1,30 +1,12 @@
----
-icon: hand-wave
-layout:
-  width: default
-  title:
-    visible: true
-  description:
-    visible: false
-  tableOfContents:
-    visible: true
-  outline:
-    visible: true
-  pagination:
-    visible: true
-  metadata:
-    visible: true
----
-
 # Mediculture
 
-{% hint style="info" %}
+<img src="src/img/titleLogoDark.svg" height="50px">
+
 This is a Smart India Hackathon project that is currently under active development. We encourage to take the contents of this page with a bit of salt, as the development cycle is happening rapidly and there may be breaking changes.
-{% endhint %}
 
 ### What is Mediculture?
 
-In our pursuit for Athmanirbar Bharat, we wish to implement Bharat's first "One Nation, One Medical System" idea. It is an integrated medical system leveraging the modern enhancements in today's world.
+In our pursuit for Atmanirbhar Bharat, we wish to implement Bharat's first "One Nation, One Medical System" idea. It is an integrated medical system leveraging the modern enhancements in today's world.
 
 ### What are we envisioning?
 
@@ -32,10 +14,7 @@ In our pursuit for Athmanirbar Bharat, we wish to implement Bharat's first "One 
 2. A single-source of truth with multiple structures to bear the load as per requirement.
 3. To limit latency and time consumption by maybe integrating AI to save lives in the process.
 
-{% hint style="success" %}
 ### Project Data
-
-
 
 * Problem Statement ID – 25114
 * Problem Statement Title - Student Innovation
@@ -44,17 +23,22 @@ In our pursuit for Athmanirbar Bharat, we wish to implement Bharat's first "One 
 * Team ID- VIT-708
 * Team Name – Mediculture
 * Tentative Name - Super Fast Medicine Delivery System
-{% endhint %}
-
-
 
 ### Jump right in!
 
-<table data-view="cards"><thead><tr><th></th><th></th><th></th><th data-hidden data-card-cover data-type="files"></th><th data-hidden></th><th data-hidden data-card-target data-type="content-ref"></th></tr></thead><tbody><tr><td><h4><i class="fa-bolt">:bolt:</i></h4></td><td><strong>Milestone</strong></td><td>Join and see our plans</td><td></td><td></td><td><a href="getting-started/milestone-timeline.md">milestone-timeline.md</a></td></tr><tr><td><h4><i class="fa-leaf">:leaf:</i></h4></td><td><strong>Members</strong></td><td>See who's behind this Project!</td><td></td><td></td><td><a href="getting-started/members.md">members.md</a></td></tr><tr><td><h4><i class="fa-globe-pointer">:globe-pointer:</i></h4></td><td><strong>Code</strong></td><td>Take a look our repo!</td><td></td><td></td><td><a href="https://github.com/JCKawin/Mediculture">https://github.com/JCKawin/Mediculture</a></td></tr></tbody></table>
+<table>
+        <tr>
+            <td><a href="docs/main/getting-started/milestone-timeline.md">Milestone Timeline</a></td>
+            <td>Join and see our plans</td>
+        </tr>
+        <tr>
+            <td><a href="docs/main/getting-started/members.md">Members</a></td>
+            <td>See who's behind this Project!</td>
+        </tr>
+    </table>
 
 ### Feasibility and Scope
 
-\
 This project mainly claims to serve the following members of society:
 
 1. Middle aged people who mainly prefer convenience over cost due to their busy schedules and tight constraints.
@@ -65,3 +49,32 @@ This project mainly claims to serve the following members of society:
 Data can also be extract and used for trend analysis in the public domain with prior permission. Collected data helps governments and health institutions plan, predict outbreaks, and improve policies.
 
 The project connects institutions, improves convenience, and strengthens cooperation to provide smoother, reliable services; among public and private sectors.
+
+## Proposed Solution:
+
+Revolutionizing emergency medicine delivery through drone technology, AI-driven logistics, and doctor-verified digital support for real-time, life-saving access.
+
+1. **Drone Technology** – High-speed, blade-safe drones deliver medicines across a few kilometers in 3 – 4 minutes, ensuring life-critical supplies reach on time.
+2. **AI Route Navigation** – AI analyzes traffic, weather, and airspace for the fastest and safest delivery paths.
+3. **Drone Technology** – High-speed, blade-safe drones deliver medicines across a few kilometers in 3 – 4 minutes, ensuring life-critical supplies reach on time.
+4. **Emergency Health Network** – On-demand prescriptions and verified doctor consultations through an integrated telemedicine platform.
+5. **Doctor-Verified Social Community** – Certified medical experts share trusted health updates, preventing misinformation and false assumptions.
+6. **Real-Time Location Tracking** – Secure tracking of medicines from dispatch to doorstep, ensuring authenticity and safety.
+
+## Technical Approach:
+
+* **Frontend (Next.js + Flutter):** Next.js gives us high-performance dynamic web apps. Flutter lets us build user friendly, native-like mobile apps from a single codebase.
+* **Backend (Django + Python):** Django provides a secure, scalable, and rapid development environment, while Python offers simplicity, rich libraries, and strong community support.
+* **Load Balancing (Kubernetes):** Kubernetes ensures scalability, reliability, and efficient resource usage by managing containers and balancing traffic automatically.
+* **Database (PostgreSQL + MongoDB):** PostgreSQL delivers robust relational data management, and MongoDB handles flexible, schema-less data for high adaptability.
+* **AI Framework (TensorFlow):** TensorFlow provides a powerful AI framework for building and deploying intelligent models
+* **Drones:** High-speed drone delivery ensures fast, efficient logistics
+
+## Feasibility and Scope
+
+This project mainly claims to serve the following members of society:
+
+* Middle aged people who mainly prefer convenience over cost due to their busy schedules and tight constraints.
+* Elderly people who are mostly under medication for chronic diseases such as cardiac related issues, diabetes, cancer etc.
+* To handle emergency situations instantly which would save lives hassle-free
+* Authorized doctors who are ready to consult patients.
