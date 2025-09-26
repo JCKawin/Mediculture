@@ -35,6 +35,10 @@ In our pursuit for Atmanirbhar Bharat, we wish to implement Bharat's first "One 
             <td><a href="docs/main/getting-started/members.md">Members</a></td>
             <td>See who's behind this Project!</td>
         </tr>
+        <tr>
+            <td><a href="https://mediculture.gitbook.io/home">Project Documentation</a></td>
+            <td>Learn more about our project!</td>
+        </tr>
     </table>
 
 ## Feasibility and Scope
