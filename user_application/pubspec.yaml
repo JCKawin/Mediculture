@@ -43,8 +43,8 @@ dependencies:
   flutter_map: ^7.0.2       # Add this
   latlong2: ^0.9.1          # Add this for coordinates
   location: ^5.0.3
-  another_telephony: ^0.4.1        # Add this for SMS
-  url_launcher: ^6.2.5
+  url_launcher: ^6.2.5       # Add this for SMS
+  
   http: ^1.1.0
   
 
